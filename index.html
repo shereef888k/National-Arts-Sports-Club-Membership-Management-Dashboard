@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Membership Management Dashboard — National Arts & Sports Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0f766e;
+  --primary-hover: #0d9488;
+  --primary-dark: #092320;
+  --primary-light: #ccfbf1;
+  --wa-green: #25d366;
+  --wa-green-dark: #128c7e;
+  --bg-main: #f1f5f9;
+  --bg-card: #ffffff;
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+  --border-light: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 16px rgba(9,35,32,0.06);
+  --shadow-lg: 0 20px 35px -10px rgba(9,35,32,0.15);
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  position: fixed;
+  left: 0; top: 0; bottom: 0;
+  width: 260px;
+  background: linear-gradient(180deg, #081d1b 0%, #0c2d29 100%);
+  color: #fff;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 100;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+}
+.logo-container {
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.logo-header-flex {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.club-logo-sidebar {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(37, 211, 102, 0.35));
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+.club-logo-sidebar:hover {
+  transform: scale(1.08) rotate(3deg);
+}
+.title-with-logo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.club-logo-main {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(15, 118, 110, 0.22));
+  flex-shrink: 0;
+}
+.logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(37, 211, 102, 0.15);
+  border: 1px solid rgba(37, 211, 102, 0.3);
+  color: var(--wa-green);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.logo-badge .dot {
+  width: 6px; height: 6px;
+  background: var(--wa-green);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--wa-green);
+}
+.logo-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.25;
+}
+.logo-sub {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #cbd5e1;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+.nav-item:hover {
+  background: rgba(255,255,255,0.08);
+  color: #ffffff;
+}
+.nav-item.active {
+  background: linear-gradient(135deg, var(--primary) 0%, #14b8a6 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 118, 110, 0.35);
+}
+
+.sidebar-footer {
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 12px;
+  color: #94a3b8;
+}
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+.pulse-green {
+  width: 8px; height: 8px;
+  background: var(--wa-green);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(37, 211, 102, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+/* Main Layout */
+.main {
+  margin-left: 260px;
+  padding: 32px 36px;
+  max-width: 1560px;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.header-title h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+}
+.header-title .sub {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Buttons */
+.btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: inherit;
+  background: linear-gradient(135deg, var(--primary) 0%, #14b8a6 100%);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(15, 118, 110, 0.25);
+  transition: all 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 118, 110, 0.35);
+  opacity: 0.96;
+}
+.btn:active {
+  transform: translateY(0);
+}
+.btn.secondary {
+  background: var(--bg-card);
+  color: var(--primary-dark);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+.btn.secondary:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-md);
+}
+.btn.wa-btn {
+  background: linear-gradient(135deg, #128c7e 0%, #25d366 100%);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+}
+
+/* KPI Stats Cards */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary) 0%, #14b8a6 100%);
+}
+.card.wa-card::before {
+  background: linear-gradient(90deg, #128c7e 0%, #25d366 100%);
+}
+.card.ready-card::before {
+  background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
+}
+.card.filter-card::before {
+  background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
+}
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.card .label {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.card-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  background: var(--bg-main);
+  color: var(--primary-dark);
+}
+.card .num {
+  font-size: 32px;
+  font-weight: 800;
+  margin-top: 10px;
+  color: var(--text-dark);
+  letter-spacing: -1px;
+}
+
+/* Control Toolbar */
+.control-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.toolbar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 300px;
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 16px;
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px 14px 12px 42px;
+  background: #ffffff;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+}
+
+.select-custom {
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  background: #ffffff;
+  font-size: 14px;
+  font-family: inherit;
+  font-weight: 600;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.select-custom:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+}
+
+/* Quick Filter Pills */
+.quick-pills {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.pill-label {
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+.filter-pill {
+  border: 1px solid var(--border-light);
+  background: #f8fafc;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-pill:hover {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+  border-color: #99f6e4;
+}
+.filter-pill.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+/* Data Table Wrap */
+.tablewrap {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-light);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 960px;
+}
+th, td {
+  padding: 16px 18px;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 14px;
+  vertical-align: middle;
+}
+th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+tbody tr {
+  transition: background-color 0.15s ease;
+}
+tbody tr:hover {
+  background-color: #f8fafc;
+}
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Status & Badges */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.status-pill.available {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+.status-pill.none {
+  background: #f1f5f9;
+  color: #94a3b8;
+  border: 1px solid #e2e8f0;
+}
+.status-pill .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.avatar-img {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  background: #f1f5f9;
+}
+.avatar-placeholder {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.avatar-placeholder.large {
+  width: 60px; height: 60px;
+  font-size: 26px;
+}
+
+.blood-badge {
+  background: #ffe4e6;
+  color: #be123c;
+  border: 1px solid #fecdd3;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  display: inline-block;
+  letter-spacing: 0.3px;
+}
+
+.member-name-box {
+  display: flex;
+  flex-direction: column;
+}
+.member-name-box b {
+  color: var(--text-dark);
+  font-size: 14px;
+}
+.member-id-tag {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.msg-snippet {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #475569;
+  font-size: 13px;
+}
+
+.btn-send-table {
+  background: linear-gradient(135deg, #128c7e 0%, #25d366 100%);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 3px 10px rgba(37, 211, 102, 0.25);
+  transition: all 0.2s ease;
+}
+.btn-send-table:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.35);
+}
+
+/* Modal Styling */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 35, 32, 0.7);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 9999;
+}
+.modal.show {
+  display: flex;
+}
+.box {
+  background: #ffffff;
+  width: min(780px, 100%);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: var(--shadow-lg);
+  max-height: 92vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,0.4);
+  animation: modalPop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border-light);
+}
+.box-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.close-btn {
+  background: var(--bg-main);
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--text-muted);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.close-btn:hover {
+  background: #e2e8f0;
+  color: var(--text-dark);
+}
+
+/* Member Profile Card inside Modal */
+.member-profile-card {
+  display: flex;
+  gap: 16px;
+  background: linear-gradient(135deg, #092320 0%, #0f3d38 100%);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+  box-shadow: 0 8px 24px rgba(9,35,32,0.15);
+}
+.modal-avatar {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--wa-green);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  background: #ffffff;
+  flex-shrink: 0;
+}
+.modal-member-info {
+  flex: 1;
+}
+.modal-member-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+}
+.modal-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px 14px;
+  font-size: 13px;
+}
+.modal-info-grid div span {
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 700;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+.modal-info-grid div b {
+  color: #f8fafc;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+/* Message Section */
+.form-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.form-label {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-dark);
+}
+.quick-vars {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.var-btn {
+  background: var(--bg-main);
+  border: 1px solid var(--border-light);
+  color: var(--primary);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.var-btn:hover {
+  background: var(--primary-light);
+  border-color: #99f6e4;
+}
+
+.box textarea {
+  width: 100%;
+  height: 115px;
+  resize: vertical;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+}
+.box textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+}
+
+/* Image Attachment Section */
+.img-section {
+  margin-top: 16px;
+  background: #f8fafc;
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 16px 18px;
+}
+.img-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.img-tab-btn {
+  border: 1px solid var(--border-light);
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+.img-tab-btn:hover {
+  background: var(--primary-light);
+  color: var(--primary-dark);
+}
+.img-tab-btn.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 4px 10px rgba(15, 118, 110, 0.25);
+}
+
+.img-preview-box {
+  background: #ffffff;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  max-height: 190px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  position: relative;
+}
+.img-preview-box img {
+  max-height: 170px;
+  max-width: 100%;
+  border-radius: 8px;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.no-img-text {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.img-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+.checkbox-row input {
+  accent-color: var(--primary);
+  width: 18px; height: 18px;
+  cursor: pointer;
+}
+
+.toast-notice {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  color: #166534;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* Mobile Header Bar & Drawer Styling */
+.mobile-top-bar {
+  display: none;
+  position: sticky;
+  top: 0; left: 0; right: 0;
+  height: 64px;
+  background: linear-gradient(180deg, #081d1b 0%, #0c2d29 100%);
+  color: #ffffff;
+  padding: 0 16px;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 950;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.mobile-left-flex {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mobile-hamburger {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #ffffff;
+  font-size: 20px;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.mobile-hamburger:active {
+  background: var(--primary);
+  transform: scale(0.95);
+}
+.mobile-logo-img {
+  width: 36px; height: 36px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(37, 211, 102, 0.4));
+}
+.mobile-title-text {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 170px;
+}
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 35, 32, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sidebar-backdrop.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+.mobile-close-btn {
+  display: none;
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.mobile-close-btn:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+/* View Mode Switcher Group */
+.view-toggle-group {
+  display: inline-flex;
+  background: var(--bg-main);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.view-btn {
+  border: none;
+  background: transparent;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
+  color: var(--text-muted);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.view-btn:hover {
+  color: var(--text-dark);
+}
+.view-btn.active {
+  background: #ffffff;
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Touch-Friendly Mobile Cards Grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 640px) and (max-width: 991px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.member-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.member-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+.member-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.member-card-avatar {
+  flex-shrink: 0;
+}
+.member-card-title-area {
+  flex: 1;
+  min-width: 0;
+}
+.member-card-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.member-card-sub-flex {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.member-card-body {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  border: 1px solid #f1f5f9;
+}
+.card-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.info-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+.info-value {
+  color: var(--text-dark);
+  font-weight: 700;
+  text-align: right;
+  word-break: break-word;
+}
+.btn-send-card {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #128c7e 0%, #25d366 100%);
+  color: white;
+  border: none;
+  font-weight: 800;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+  transition: all 0.2s ease;
+}
+.btn-send-card:active {
+  transform: scale(0.98);
+}
+.btn-send-card.disabled {
+  background: #e2e8f0;
+  color: #94a3b8;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Swipable Touch Pills */
+.quick-pills {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.quick-pills::-webkit-scrollbar { display: none; }
+.filter-pill {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Responsive Media Queries for Phone & Tablet */
+@media (max-width: 991px) {
+  .mobile-top-bar { display: flex; }
+  .mobile-close-btn { display: flex; }
+  .sidebar {
+    left: -290px;
+    width: 275px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 999;
+  }
+  .sidebar.mobile-open {
+    transform: translateX(290px);
+  }
+  .main {
+    margin-left: 0;
+    padding: 20px 16px 40px 16px;
+    max-width: 100%;
+  }
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .card {
+    padding: 16px;
+  }
+  .card .num {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .header-actions {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+  .header-actions .btn {
+    flex: 1;
+    justify-content: center;
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .title-with-logo {
+    gap: 12px;
+  }
+  .club-logo-main {
+    width: 48px; height: 48px;
+  }
+  .header-title h1 {
+    font-size: 20px;
+  }
+  .header-title .sub {
+    font-size: 12px;
+  }
+  
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .search-wrapper {
+    min-width: 100%;
+  }
+  .toolbar-controls-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+  .toolbar-controls-row .select-custom {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Modal Mobile Bottom-Sheet Adaptation */
+  .modal {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .box {
+    width: 100%;
+    max-height: 92vh;
+    border-radius: 24px 24px 0 0;
+    padding: 20px 16px 28px 16px;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .member-profile-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 14px;
+    gap: 10px;
+  }
+  .modal-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    text-align: left;
+    gap: 8px 10px;
+    margin-top: 8px;
+    width: 100%;
+  }
+  .actions {
+    flex-direction: column-reverse;
+  }
+  .actions .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+    font-size: 15px;
+  }
+  .img-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  .img-tab-btn {
+    text-align: center;
+    padding: 8px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .card {
+    padding: 14px 12px;
+    border-radius: 12px;
+  }
+  .card .label {
+    font-size: 11px;
+  }
+  .card-icon {
+    width: 30px; height: 30px;
+    font-size: 14px;
+  }
+  .card .num {
+    font-size: 22px;
+    margin-top: 4px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile Header Navigation Bar -->
+<header class="mobile-top-bar">
+  <div class="mobile-left-flex">
+    <button type="button" class="mobile-hamburger" onclick="toggleMobileSidebar()" aria-label="Toggle Menu">☰</button>
+    <img src="f9f39fc5-213b-4afa-b4bf-d9ab834dc633-removebg-preview.png" class="mobile-logo-img" alt="Club Logo" />
+    <span class="mobile-title-text">National Arts Hub</span>
+  </div>
+  <div class="logo-badge" style="margin-bottom:0;"><span class="dot"></span> PRO</div>
+</header>
+
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeMobileSidebar()"></div>
+
+<aside class="sidebar">
+  <button type="button" class="mobile-close-btn" onclick="closeMobileSidebar()" aria-label="Close Menu">✕</button>
+  <div>
+    <div class="logo-container">
+      <div class="logo-header-flex">
+        <img src="f9f39fc5-213b-4afa-b4bf-d9ab834dc633-removebg-preview.png" class="club-logo-sidebar" alt="National Arts &amp; Sports Club Logo" />
+        <div>
+          <div class="logo-badge"><span class="dot"></span> PRO PORTAL</div>
+          <h2 class="logo-title">National Arts &amp; Sports Club</h2>
+        </div>
+      </div>
+      <div class="logo-sub">Membership Management Hub</div>
+    </div>
+
+    <nav class="nav-menu">
+      <a class="nav-item active" href="#" onclick="closeMobileSidebar()">📊 <span>Membership Dashboard</span></a>
+      <a class="nav-item" href="#" onclick="closeMobileSidebar()">👥 <span>Members (174)</span></a>
+      <a class="nav-item" href="#" onclick="closeMobileSidebar()">🩸 <span>Blood Donors</span></a>
+    </nav>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="status-indicator">
+      <span class="pulse-green"></span> WhatsApp Web Ready
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="top-bar">
+    <div class="header-title">
+      <div class="title-with-logo">
+        <img src="f9f39fc5-213b-4afa-b4bf-d9ab834dc633-removebg-preview.png" class="club-logo-main" alt="National Arts &amp; Sports Club Logo" />
+        <div>
+          <h1>Membership Management Dashboard</h1>
+          <div class="sub">National Arts &amp; Sports Club • Membership Directory &amp; Dispatch Hub</div>
+        </div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <label class="btn secondary">
+        📁 Import Excel
+        <input id="file" type="file" accept=".xlsx,.xls,.csv" hidden />
+      </label>
+      <button class="btn" onclick="openBulk()">📋 Copy Bulk List</button>
+    </div>
+  </div>
+
+  <section class="stats">
+    <div class="card">
+      <div class="card-header-row">
+        <div class="label">Total Members</div>
+        <div class="card-icon">👥</div>
+      </div>
+      <div class="num" id="total">0</div>
+    </div>
+    <div class="card wa-card">
+      <div class="card-header-row">
+        <div class="label">WhatsApp Numbers</div>
+        <div class="card-icon">💬</div>
+      </div>
+      <div class="num" id="wa">0</div>
+    </div>
+    <div class="card ready-card">
+      <div class="card-header-row">
+        <div class="label">Messages Ready</div>
+        <div class="card-icon">⚡</div>
+      </div>
+      <div class="num" id="ready">0</div>
+    </div>
+    <div class="card filter-card">
+      <div class="card-header-row">
+        <div class="label">Active Filtered</div>
+        <div class="card-icon">🔍</div>
+      </div>
+      <div class="num" id="filtered">0</div>
+    </div>
+  </section>
+
+  <div class="control-card">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <span class="search-icon">🔍</span>
+        <input id="search" class="search-input" placeholder="Search member name, phone, father, address or member #..." />
+      </div>
+
+      <div class="toolbar-controls-row">
+        <select id="status" class="select-custom">
+          <option value="all">⚡ All Statuses</option>
+          <option value="wa">✅ WhatsApp Available</option>
+          <option value="no">🚫 No WhatsApp Number</option>
+        </select>
+
+        <select id="bloodFilter" class="select-custom">
+          <option value="all">🩸 All Blood Groups</option>
+          <option value="o+">O+</option>
+          <option value="a+">A+</option>
+          <option value="b+">B+</option>
+          <option value="ab+">AB+</option>
+          <option value="o-">O-</option>
+          <option value="a-">A-</option>
+          <option value="b-">B-</option>
+          <option value="ab-">AB-</option>
+        </select>
+
+        <div class="view-toggle-group">
+          <button type="button" class="view-btn" id="btnViewCard" onclick="setViewMode('card')" title="Card View">📇 Cards</button>
+          <button type="button" class="view-btn active" id="btnViewTable" onclick="setViewMode('table')" title="Table View">📊 Table</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-pills">
+      <span class="pill-label">Quick Filters:</span>
+      <button type="button" class="filter-pill active" onclick="setQuickBlood('all')">All Members</button>
+      <button type="button" class="filter-pill" onclick="setQuickBlood('o+')">O+ Group</button>
+      <button type="button" class="filter-pill" onclick="setQuickBlood('a+')">A+ Group</button>
+      <button type="button" class="filter-pill" onclick="setQuickBlood('b+')">B+ Group</button>
+      <button type="button" class="filter-pill" onclick="setQuickBlood('ab+')">AB+ Group</button>
+    </div>
+  </div>
+
+  <!-- Touch-Friendly Mobile Cards Container -->
+  <div id="cardsGridContainer" class="cards-grid" style="display:none;"></div>
+
+  <!-- Desktop Table Wrap Container -->
+  <div class="tablewrap" id="tableWrapContainer">
+    <table>
+      <thead>
+        <tr>
+          <th>Photo</th>
+          <th>Name &amp; ID</th>
+          <th>Phone Number</th>
+          <th>Blood Group</th>
+          <th>Father's Name</th>
+          <th>WhatsApp Status</th>
+          <th>Message Preview</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</main>
+
+<!-- Send Message Modal -->
+<div class="modal" id="modal">
+  <div class="box">
+    <div class="box-header">
+      <h2 id="modalTitle"><img src="f9f39fc5-213b-4afa-b4bf-d9ab834dc633-removebg-preview.png" style="width:32px; height:32px; object-fit:contain; vertical-align:middle;" alt="Club Logo" /> Send WhatsApp Message</h2>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+
+    <!-- Member Profile Card -->
+    <div class="member-profile-card" id="memberProfileCard">
+      <div id="modalAvatarContainer"></div>
+      <div class="modal-member-info">
+        <h3 id="modalMemberNameHeader">Member Details</h3>
+        <div class="modal-info-grid">
+          <div><span>Member No</span><b id="infoMno">—</b></div>
+          <div><span>Blood Group</span><b id="infoBlood">—</b></div>
+          <div><span>Father's Name</span><b id="infoFather">—</b></div>
+          <div><span>Phone</span><b id="infoPhone">—</b></div>
+          <div><span>Gmail</span><b id="infoGmail">—</b></div>
+          <div><span>DOB</span><b id="infoDob">—</b></div>
+          <div><span>Address</span><b id="infoAddress">—</b></div>
+          <div><span>Interest</span><b id="infoInterest">—</b></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Textarea -->
+    <div class="form-label-row">
+      <span class="form-label">Message Text:</span>
+      <div class="quick-vars">
+        <button type="button" class="var-btn" onclick="insertVar('{Name}')">+ Name</button>
+        <button type="button" class="var-btn" onclick="insertVar('{MemberNo}')">+ Member #</button>
+        <button type="button" class="var-btn" onclick="insertVar('{ClubName}')">+ Club</button>
+      </div>
+    </div>
+    <textarea id="msg" placeholder="Write message here..."></textarea>
+
+    <!-- Attached Image Section -->
+    <div class="img-section">
+      <span class="form-label" style="margin-bottom:8px; display:block;">Attached Image / Media:</span>
+      <div class="img-tabs">
+        <button type="button" class="img-tab-btn active" id="tab_qr" onclick="setImageSource('qr')">🔳 Club QR Code</button>
+        <button type="button" class="img-tab-btn" id="tab_photo" onclick="setImageSource('photo')">👤 Member Photo</button>
+        <button type="button" class="img-tab-btn" id="tab_upload" onclick="setImageSource('upload')">📁 Custom Upload</button>
+        <button type="button" class="img-tab-btn" id="tab_none" onclick="setImageSource('none')">🚫 No Image</button>
+      </div>
+
+      <div class="img-preview-box">
+        <img id="imagePreview" src="Example-QR-code.webp" alt="Attached QR Code Preview" />
+        <span id="noImgText" class="no-img-text" style="display:none;">No image selected</span>
+        <input type="file" id="customImgInput" accept="image/*" style="display:none;" onchange="handleCustomUpload(event)" />
+      </div>
+
+      <div class="img-options">
+        <label class="checkbox-row">
+          <input type="checkbox" id="copyImgCheck" checked />
+          <span>Auto-Copy Attached Image (Example-QR-code.webp) to Clipboard when sending</span>
+        </label>
+        <label class="checkbox-row">
+          <input type="checkbox" id="attachLinkCheck" onchange="syncTextWithImageLink()" />
+          <span>Include Image Link in WhatsApp Message text</span>
+        </label>
+      </div>
+    </div>
+
+    <div id="toastNotice" class="toast-notice" style="display:none;"></div>
+
+    <div class="actions">
+      <button class="btn secondary" id="btnDownloadImg" onclick="downloadCurrentImage()">📥 Download QR Code</button>
+      <button class="btn secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn wa-btn" onclick="sendWhatsApp()">💬 Send via WhatsApp</button>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+let data=[{"": null, "Timestamp": "2024-07-03T00:34:31.199000", "gmail": "hasdumillath123@gmail.come", "Photo": "https://drive.google.com/open?id=1X0N9pQm4HqceaHYphgPHdwe0R_TJ6lfk", "Full Name": "Mohammed hassan", "DOB": "6/20/0090", "Address": "Kasargod Udma padinhar", "Phone number": "Member Name", "Blood group": "O+", "WhatsApp Number": 10093091956.0, "Fathers Name": "C.h Mohammed kunji", "Interest": "Social work", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed hassan (Member #1), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T14:16:14.975000", "gmail": "basheerkanniyi123@gmail.com", "Photo": "https://drive.google.com/open?id=1_JOg5cgdqMmslEAgReQVEbZWDSfWG7uK", "Full Name": "MUHAMMED BASHEER. A", "DOB": "1976-02-02T00:00:00", "Address": "KANNIYIL HOUSE, UDMA West ", "Phone number": 8943436333.0, "Blood group": "O+ve", "WhatsApp Number": 8943436333.0, "Fathers Name": "ABDUL KHADER", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MUHAMMED BASHEER. A (Member #2), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T14:17:15.039000", "gmail": "westernchiken909@gmail.com", "Photo": "https://drive.google.com/open?id=1UQHcZBNgISAqI8t_CZLPJN4ivEWsanJ8", "Full Name": "Shihabudeen pa", "DOB": "1983-01-07T00:00:00", "Address": "Thottapady house", "Phone number": 9746611344.0, "Blood group": "B+", "WhatsApp Number": 9746611344.0, "Fathers Name": "Moosa", "Interest": "No", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Shihabudeen pa (Member #3), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T15:03:06.016000", "gmail": "Fayazwest802@gmail.com", "Photo": "https://drive.google.com/open?id=192OQzZC_fuu7FE-b1DqSyjBLjQrO9gmB", "Full Name": "Mohammed Fayaz TR", "DOB": "1998-08-04T00:00:00", "Address": "Thottappadi House Udma padhinhar udma \nKasaragod", "Phone number": 7356834861.0, "Blood group": "A+ve", "WhatsApp Number": 7353834861.0, "Fathers Name": "Abdul Rasheed TM", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Fayaz TR (Member #4), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T15:09:13.182000", "gmail": "uselesz14@gmail.com", "Photo": "https://drive.google.com/open?id=12AUT2AX-FuwcAsNxP3HJRI7tdGMzWDZH", "Full Name": "ZAIR MOIDEEN ", "DOB": "1/1/0001", "Address": "Thayath house, Udma padinhar, Millath nagar \nPo Udma padinhar, pin 671316, Kasaragod ", "Phone number": 9656561889.0, "Blood group": "O+", "WhatsApp Number": 9656561889.0, "Fathers Name": "Moideen ta", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ZAIR MOIDEEN  (Member #5), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T15:10:48.613000", "gmail": "Arfadpadinhar015@gmail.com", "Photo": "https://drive.google.com/open?id=1o-yUnc-nNMLeMjhmTBzlkXBIoj1_IQWs", "Full Name": "Abdul Arfad PA", "DOB": "1996-09-18T00:00:00", "Address": "Thottapady house, udma padinhar", "Phone number": 7356985015.0, "Blood group": "A+", "WhatsApp Number": 7356985015.0, "Fathers Name": "Abbas p", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul Arfad PA (Member #6), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T15:15:45.458000", "gmail": "rashiwest94@gmail.com", "Photo": "https://drive.google.com/open?id=1C-GjVolejaUv0OroPpIbiJnqBwPxzUli", "Full Name": "MOHAMMED RASHID KA", "DOB": "2001-10-29T00:00:00", "Address": "Kovval valappil house udma padinhar", "Phone number": 9567617235.0, "Blood group": "B+", "WhatsApp Number": 9567617235.0, "Fathers Name": "ABDUL KHADER", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MOHAMMED RASHID KA (Member #7), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T15:22:16.256000", "gmail": "safadmoosa81@gmail.com", "Photo": "https://drive.google.com/open?id=1Q0_B5ELx4qVzAMO8lPss8yNO1fSEIeM9", "Full Name": "SAFADMOOSA", "DOB": "1991-09-19T00:00:00", "Address": "SAFAD MOOSA\nTHOTAPADY HOUSE \nUDUMA PADINHAR\nKASARAGOD\nKERALA \nPIN 671319\nPHONE 9567509888", "Phone number": 9567509888.0, "Blood group": "B+", "WhatsApp Number": 9567509888.0, "Fathers Name": "MOOSA", "Interest": "😌", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear SAFADMOOSA (Member #8), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T15:51:30.980000", "gmail": "hariss11001@gmail.com", "Photo": "https://drive.google.com/open?id=1Aci_-lvkXNqnodQb3pfbjxPUGK7-k6X_", "Full Name": "Hariz thachara kunnu", "DOB": "1982-01-01T00:00:00", "Address": "thachara kunnu (house) P.O udma padinjar\nkerala india 671319", "Phone number": "+918606942218", "Blood group": "B+", "WhatsApp Number": "+971501568289", "Fathers Name": "Abdulla T K", "Interest": "Sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Hariz thachara kunnu (Member #9), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T15:38:24.918000", "gmail": "sareeabbas748@gmail.com", "Photo": "https://drive.google.com/open?id=1MXXajnPFI1yJqcbRFMkDLidAlN-xtcS9", "Full Name": "Abdul Muthalib P H", "DOB": "1972-10-10T00:00:00", "Address": "Udma padinhar p o udma padinhar ksd", "Phone number": 9544448413.0, "Blood group": "O+", "WhatsApp Number": 9544448413.0, "Fathers Name": "Hasainar Pandiyala ", "Interest": "Reading and football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul Muthalib P H (Member #10), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T15:54:48.143000", "gmail": "mubi808@gmail.com", "Photo": "https://drive.google.com/open?id=17Ineh3jyWM9c-fpGMLuucDPMZtlW8iWg", "Full Name": "Mubashir T A ", "DOB": "1998-01-20T00:00:00", "Address": "Thayath House Udma padinhar", "Phone number": 9895823647.0, "Blood group": "B +ve", "WhatsApp Number": 9895823647.0, "Fathers Name": "Abdulla kunhi", "Interest": "Sports ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mubashir T A  (Member #11), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T16:21:35.010000", "gmail": "muhammedajmala347@gmail.com", "Photo": "https://drive.google.com/open?id=1v5odyoY07V3_NXUyFCmI73K2kZB5pD3o", "Full Name": "Muhammed Ajmal pa ", "DOB": "2002-05-27T00:00:00", "Address": "Udma padinhar kovval valappil house ", "Phone number": 8136855583.0, "Blood group": "A+", "WhatsApp Number": 8136855583.0, "Fathers Name": "Abbas p", "Interest": "Yes", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed Ajmal pa  (Member #12), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T16:30:31.448000", "gmail": "mohammedthajudeen23@gmail.com", "Photo": "https://drive.google.com/open?id=1yQhJohz-NfNE6msLCXf9RzYjCTp-uqON", "Full Name": "Mohammed Thajudeen ", "DOB": "2006-02-21T00:00:00", "Address": "BAITHUL FATHIMA ", "Phone number": 9037363974.0, "Blood group": " B+", "WhatsApp Number": 9037363974.0, "Fathers Name": "Thajudeen ", "Interest": "Yes", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Thajudeen  (Member #13), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T16:42:24.442000", "gmail": "adhubelli@gmail.com", "Photo": "https://drive.google.com/open?id=1Ees_A-Ns4fs243i7E-HCjSqXA6rHyWMT", "Full Name": "Abdulla ", "DOB": "1994-02-09T00:00:00", "Address": "Udma padinhar ", "Phone number": "+918590434352", "Blood group": "O-", "WhatsApp Number": "+918590434352", "Fathers Name": "T K MOHIDEEN", "Interest": "🏏.⚽", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdulla  (Member #14), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T17:36:01.166000", "gmail": "thamimabdullah@gmail.com", "Photo": "https://drive.google.com/open?id=1aMBhXMPbHmjW1Dlrc8wckE4L0Tzivx_i", "Full Name": "Thamim Abdullah", "DOB": "2010-01-10T00:00:00", "Address": "Darussalam kudroli house , udma west , kasargod", "Phone number": 9847419774.0, "Blood group": "A-", "WhatsApp Number": "0505508479", "Fathers Name": "Thajudheen", "Interest": "Yes", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Thamim Abdullah (Member #15), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T17:45:10.514000", "gmail": "aneeswest733@gmail.com", "Photo": "https://drive.google.com/open?id=1jQ2FA9tqXXLtEafcQU1PTHkxmuzUNCQy", "Full Name": "ANEES K V", "DOB": "1991-11-02T00:00:00", "Address": "KOVVAL VALAPPIL HOUSE, UDMA PADINHAR ", "Phone number": 9633722733.0, "Blood group": "O positive ", "WhatsApp Number": 9633722733.0, "Fathers Name": "IBRAHIM K V", "Interest": "FOOTBALL ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ANEES K V (Member #16), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T19:56:16.133000", "gmail": "nisarmuhammed536@gmail.com", "Photo": "https://drive.google.com/open?id=1IxSvDPemUyrPhD9npUKXQmbDnPvccfTN", "Full Name": "MUHAMMED NISAR K.A", "DOB": "1982-03-06T00:00:00", "Address": "UDMA PADINHAR, FASEELA MANZIL", "Phone number": 9207950610.0, "Blood group": "O+ve", "WhatsApp Number": 9207950610.0, "Fathers Name": "ABDURAHMAN K", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MUHAMMED NISAR K.A (Member #17), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T20:10:20.155000", "gmail": "ahammediyask@gmail.com", "Photo": "https://drive.google.com/open?id=12IZnfFEOCdbarqj6g7JTPh4r3sNHCeKy", "Full Name": "AHAMMED IYAS C H", "DOB": "2002-10-24T00:00:00", "Address": "Uduma padinhar koppal beech road ", "Phone number": 9633643813.0, "Blood group": "O+", "WhatsApp Number": 9633643813.0, "Fathers Name": "HAMZA T A", "Interest": "Sports ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear AHAMMED IYAS C H (Member #18), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T20:14:09.521000", "gmail": "mujimillath88@gmail.com", "Photo": "https://drive.google.com/open?id=1-AQF3_vcX-Xm5ixELUJTLVAOYogMkN7y", "Full Name": "Mujeeb rahman ", "DOB": "1980-01-03T00:00:00", "Address": "Kanniyil house\nP o udma padinhar", "Phone number": 9846791909.0, "Blood group": "B+ve", "WhatsApp Number": 9846791909.0, "Fathers Name": "Abdul khader meethal", "Interest": "Singing ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mujeeb rahman  (Member #19), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T21:37:40.976000", "gmail": "jazilthayath007@gmail.com", "Photo": "https://drive.google.com/open?id=16WdTeRwslVlfYBEugwuJrasB4LrPPb9F", "Full Name": "MOIDEEN JASEEL ", "DOB": "1998-07-01T00:00:00", "Address": "THAYATH HOUSE UDMA WEST", "Phone number": 7907324474.0, "Blood group": "A+ve", "WhatsApp Number": 7907324474.0, "Fathers Name": "ABDUL HAMEED", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MOIDEEN JASEEL  (Member #20), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-05T22:31:54.238000", "gmail": "padincharkara@gmail.com", "Photo": "https://drive.google.com/open?id=1Q2g8ePTGo8p0k8SoPVcmfz2s_QA6d_ZC", "Full Name": "Pk Abdulla ", "DOB": "1981-08-15T00:00:00", "Address": "Pk House, P. O Udma West", "Phone number": 8714210696.0, "Blood group": "AB+ve", "WhatsApp Number": 8714210696.0, "Fathers Name": "Abdulrahman Pk", "Interest": "Team Work", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Pk Abdulla  (Member #21), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-06T01:27:46.626000", "gmail": "hassumillath123@gmail.come", "Photo": "https://drive.google.com/open?id=1uT72u0_YnntWvxrL_rqiQDd_KT7j20tL", "Full Name": "Mohammed hassan", "DOB": "1990-05-20T00:00:00", "Address": "Mohammed hassan Udma padinhar", "Phone number": 8606277151.0, "Blood group": "O+", "WhatsApp Number": 8606277151.0, "Fathers Name": "Mohammed kunji c.h", "Interest": "Good behaviour", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed hassan (Member #22), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-06T10:38:15.477000", "gmail": "musthaqahamed1707@gmail.com", "Photo": "https://drive.google.com/open?id=1HP5mqHN01qksvn8suqf3gs0dQc3X_Ej-", "Full Name": "Ahammed Musthak ", "DOB": "2000-06-17T00:00:00", "Address": "Rahmaniya Manzil Udma padinhar ", "Phone number": "07940773417", "Blood group": "O+ve", "WhatsApp Number": 9605539824.0, "Fathers Name": "Mohammed Ali P V", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahammed Musthak  (Member #23), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-06T10:54:20.385000", "gmail": "saeedkv2816@gmail.com", "Photo": "https://drive.google.com/open?id=1qnHTkYnOnCMQ-GqPoQf9VI3yBQc36bZJ", "Full Name": "ABDUL SAHEED KV", "DOB": "1995-10-14T00:00:00", "Address": "KV HOUSE UDMA PADINHAR ", "Phone number": "+918714046447", "Blood group": "O-ve", "WhatsApp Number": "+971527364411", "Fathers Name": "MOHAMMED KUNHI KV", "Interest": "CARS", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ABDUL SAHEED KV (Member #24), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-06T10:57:48.478000", "gmail": "mahshooquemca369@gmail.com", "Photo": "https://drive.google.com/open?id=11wfHsdO4p8RmqlJ3uD0e5VAb8R3g6Bv1", "Full Name": "Mahshooque kudroli", "DOB": "1999-06-04T00:00:00", "Address": "Kudroli house, udma padinjar ", "Phone number": 9544832975.0, "Blood group": "AB+ve", "WhatsApp Number": 9544832975.0, "Fathers Name": "Khamarudheen", "Interest": "Coding", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mahshooque kudroli (Member #25), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-06T17:38:41.234000", "gmail": "erfank11@gmail.com", "Photo": "https://drive.google.com/open?id=1bHh9f8ltSZ6lov5PlScY6XGncJmhHq5s", "Full Name": "Erfan K", "DOB": "1992-12-07T00:00:00", "Address": "Arafath Manzil Chathankai", "Phone number": 9747757417.0, "Blood group": "B+ve", "WhatsApp Number": 9747757417.0, "Fathers Name": "Abdulla K", "Interest": "Reading", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Erfan K (Member #26), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-06T21:59:00.101000", "gmail": "pachu1001@gmail.com", "Photo": "https://drive.google.com/open?id=1PvQbNf6FiwH4TfKSD2QPEovJ65YfyRha", "Full Name": "Abdulla  Tayath", "DOB": "1976-01-06T00:00:00", "Address": "Tayath house", "Phone number": 9947196202.0, "Blood group": "O+ve", "WhatsApp Number": 9947196202.0, "Fathers Name": "T Khalid", "Interest": "Social Work", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdulla  Tayath (Member #27), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-06T22:04:12.486000", "gmail": "plfamilymeet@gmail.com", "Photo": "https://drive.google.com/open?id=1l8Eh9NijSvZWD2fokMrTrw8zafkTxFMK", "Full Name": "Najeeb KM", "DOB": "1966-01-01T00:00:00", "Address": "Hira Munzil", "Phone number": 9567110610.0, "Blood group": "A+ve", "WhatsApp Number": 9567110610.0, "Fathers Name": "KM Salih", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Najeeb KM (Member #28), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-07T02:44:00.525000", "gmail": "faisalpkudmapadinhar@gmail.com", "Photo": "https://drive.google.com/open?id=1wXgpnW7aulBI8ySq1WdUxZzSeA-YfbwD", "Full Name": "FAISAL P K", "DOB": "1985-06-01T00:00:00", "Address": "P K house, Udma Padinhar ", "Phone number": "+91 9526047304", "Blood group": "B+", "WhatsApp Number": "+919526047304", "Fathers Name": "ABDUL RAHIMAN P K", "Interest": "Cricket, football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear FAISAL P K (Member #29), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-07T06:34:03.884000", "gmail": "mohammedashfaq123@gmail.com", "Photo": "https://drive.google.com/open?id=1CKMnRAP3DCEFn0jOmD18oJNi_kwKU4cR", "Full Name": "Mohammed Ashfaq ch", "DOB": "2009-07-11T00:00:00", "Address": "Koppal", "Phone number": 9946698175.0, "Blood group": "B+", "WhatsApp Number": 9946698175.0, "Fathers Name": "Hamza", "Interest": "Malayalam", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Ashfaq ch (Member #30), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-07T16:18:55.517000", "gmail": "shereef888k@gmail.com", "Photo": "https://drive.google.com/open?id=1_Q_OxQyVRhsc7vVzJc8pIsm1y6x3rrX2", "Full Name": "Muhammed Shereef K", "DOB": "2003-02-09T00:00:00", "Address": "Noufara Manzil Udma West Udma ", "Phone number": 9207101461.0, "Blood group": "B+", "WhatsApp Number": 9207101461.0, "Fathers Name": "Mohammed Kunhi ", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed Shereef K (Member #31), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-07T19:20:46.401000", "gmail": "munzithayath@gmail.com", "Photo": "https://drive.google.com/open?id=1BEiTmUuaY-CKH2kqqT1sRf4Ui5Hhgi1H", "Full Name": "Ahammed munzeer T.A", "DOB": "2008-02-14T00:00:00", "Address": "Thayath house udma padinhar", "Phone number": 9633601909.0, "Blood group": "B+", "WhatsApp Number": 9633601909.0, "Fathers Name": "Abdulla kunhi", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahammed munzeer T.A (Member #32), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-07T19:37:45.156000", "gmail": "mohammedashfaqch@gmail.com", "Photo": "https://drive.google.com/open?id=13xNFBM2ZM1DSNFff9ne4gWv5RBEHAyem", "Full Name": "Mohammed Ashfaq ch", "DOB": "2009-07-11T00:00:00", "Address": "Koppal(kovval beach road)udma padinhar", "Phone number": 9946698175.0, "Blood group": "B+", "WhatsApp Number": 9946698175.0, "Fathers Name": "Hamza", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Ashfaq ch (Member #33), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-07T19:51:05.953000", "gmail": "fahimfa043@gmail.com", "Photo": "https://drive.google.com/open?id=1cEpKrLt5hgi5TndiGEIY3I1cZR_2-KrC", "Full Name": "Ahamned faseeh TM", "DOB": "2007-09-18T00:00:00", "Address": "Thayath house Udma padinhar", "Phone number": 8921420245.0, "Blood group": "B+", "WhatsApp Number": 8921420245.0, "Fathers Name": "Moideen kunhi", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahamned faseeh TM (Member #34), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-07T22:48:19.738000", "gmail": "sindikwest@gmail.com", "Photo": "https://drive.google.com/open?id=1ObzwejbxfUOcIavWt8XjvE0DM8C9PPgn", "Full Name": "Aboobaker Siddeeque ", "DOB": "1991-12-24T00:00:00", "Address": "Kotharambath house near juma masjid road udma Padinhar ", "Phone number": 9567086708.0, "Blood group": "A+", "WhatsApp Number": 9567086708.0, "Fathers Name": "Abdulla ", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Aboobaker Siddeeque  (Member #35), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-08T21:11:11.887000", "gmail": "abdulbasith@gmail.com", "Photo": "https://drive.google.com/open?id=1EhoybPQpXuHVofjU1LFUcwtwbercp_sp", "Full Name": "ABDUL BASITH P ", "DOB": "2007-09-22T00:00:00", "Address": "THEKKPURAM HOUSE P. O UDMA PADINHAR ", "Phone number": 9544012583.0, "Blood group": "O+", "WhatsApp Number": 9544012583.0, "Fathers Name": "USMAN T A", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ABDUL BASITH P  (Member #36), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-09T10:29:27.916000", "gmail": "machu.west@gmail.com", "Photo": "https://drive.google.com/open?id=11-ygVjmPZvGTcirQPEK5R2GFp7kWaxFb", "Full Name": "Mashood Mohammed ", "DOB": "1993-12-22T00:00:00", "Address": "Thalangara, kasaragod ", "Phone number": "0552023900", "Blood group": "B+", "WhatsApp Number": "0552023900", "Fathers Name": "Sulaiman", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mashood Mohammed  (Member #37), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-09T20:58:48.706000", "gmail": "sanusanad12345678@gmail.com", "Photo": "https://drive.google.com/open?id=1bof79ZtCZXDuP-4Lqjw3Fn9HswPw_yvJ", "Full Name": "M AHAMMED SINAN", "DOB": "2011-01-16T00:00:00", "Address": "Kanniyil house ", "Phone number": 9567878720.0, "Blood group": "O positive ", "WhatsApp Number": 9567878720.0, "Fathers Name": "Mohammad Ashraf ", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear M AHAMMED SINAN (Member #38), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-09T21:53:55.034000", "gmail": "sadiquethayath@gmail.com", "Photo": "https://drive.google.com/open?id=1cWxtkV5sxcNkbTAVN7DPpuohEw5dKq1Z", "Full Name": "MUHAMMED SADIQUE", "DOB": "1985-08-15T00:00:00", "Address": "Thayath house, Udma padinhar", "Phone number": 9656703623.0, "Blood group": "O+ve", "WhatsApp Number": 9656703623.0, "Fathers Name": "AMOO TAHYATH", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MUHAMMED SADIQUE (Member #39), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-09T21:55:16.866000", "gmail": "althafq5@gmail.com", "Photo": "https://drive.google.com/open?id=1fHKj2JOpRJxarpF4Qw3QFt_4xcvxDT34", "Full Name": "ALTHAF T A", "DOB": "1984-10-27T00:00:00", "Address": "Thayath house, udma padinhar ", "Phone number": 9961067773.0, "Blood group": "O+", "WhatsApp Number": 9961067773.0, "Fathers Name": "Late abdul khader t a", "Interest": "Cricket ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ALTHAF T A (Member #40), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-09T22:25:51.710000", "gmail": "hasdumillath123@gmail.come", "Photo": "https://drive.google.com/open?id=1X0N9pQm4HqceaHYphgPHdwe0R_TJ6lfk", "Full Name": "Mohammed hassan", "DOB": "6/20/0090", "Address": "Kasargod Udma padinhar", "Phone number": 8606277151.0, "Blood group": "O+", "WhatsApp Number": 8606277151.0, "Fathers Name": "C.h Mohammed kunji", "Interest": "Social work", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed hassan (Member #41), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-09T22:39:20.764000", "gmail": "ahammedsakeer@gmail.com", "Photo": "https://drive.google.com/open?id=1XyKTDLHiaKKcR4yAGBTgXB6IJQQpmu5F", "Full Name": "Sakeer Ahammed K", "DOB": "1988-04-22T00:00:00", "Address": "Arafath Manzil, Chathankai,kalanad", "Phone number": 9947664898.0, "Blood group": "B+", "WhatsApp Number": 9539664898.0, "Fathers Name": "Abdulla K", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Sakeer Ahammed K (Member #42), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-11T15:31:44.782000", "gmail": "haneefabdulla3@gmail.com", "Photo": "https://drive.google.com/open?id=14SVIcpoh-99ejFLnf11OoaLTVmY6fFI-", "Full Name": "Haneefa ", "DOB": "1984-04-11T00:00:00", "Address": "Haneefa abdulla\nHyder valappil house\nUdma padinjar", "Phone number": "00971582769532", "Blood group": "O+", "WhatsApp Number": "00971582769532", "Fathers Name": "Abdulla", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Haneefa  (Member #43), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-11T16:37:19.124000", "gmail": "faisal22pm@gmail.com", "Photo": "https://drive.google.com/open?id=1H6Ymo51ukOQs2S_jN1W4A2rq1jvtSI3h", "Full Name": "Muhammad FAISALMOOSA  FAISALMOOSA ", "DOB": "1988-05-20T00:00:00", "Address": "Thottapadi house\nUdma west", "Phone number": 6238590051.0, "Blood group": "A+", "WhatsApp Number": 6238590051.0, "Fathers Name": "Muhammad FAISALMOOSA  FAISALMOOSA ", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammad FAISALMOOSA  FAISALMOOSA  (Member #44), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-11T17:16:59.496000", "gmail": "sajjad@gmail.com", "Photo": "https://drive.google.com/open?id=1A9zsmBsJH0GiwK1S_24Pylh5Zfzs9ZIp", "Full Name": "Mohammed sajjad", "DOB": "2024-04-26T00:00:00", "Address": "Udma padinhar", "Phone number": 9526825477.0, "Blood group": "AB+", "WhatsApp Number": 9526825477.0, "Fathers Name": "Mohammed shafi", "Interest": 100.0, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed sajjad (Member #45), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-11T17:29:04.593000", "gmail": "kabeerahamed19@gmail.com", "Photo": "https://drive.google.com/open?id=1pnbIxBPhBhNICYBCw1jDv4qQcFS6r_UG", "Full Name": "Ahamed kabeer b", "DOB": "1988-03-01T00:00:00", "Address": "Ahamed kabeer    bevoori house   udma padinhar", "Phone number": "00971526494079", "Blood group": "B+", "WhatsApp Number": "00971526494079", "Fathers Name": "mohamed kunhi", "Interest": "😔", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahamed kabeer b (Member #46), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-11T17:34:30.559000", "gmail": "fayizwest@gmail.com", "Photo": "https://drive.google.com/open?id=15d0JvkP60Bzg7eg3P4ZXDqPJz8hjiqj5", "Full Name": "MOHAMMED FAYIZ PV", "DOB": "2007-10-16T00:00:00", "Address": "Udma padinhar ", "Phone number": 8714757787.0, "Blood group": "O+", "WhatsApp Number": 8714757787.0, "Fathers Name": "MOHAMMED ALI PV", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MOHAMMED FAYIZ PV (Member #47), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-11T18:39:28.916000", "gmail": "muhammedrafir993@gmail.com", "Photo": "https://drive.google.com/open?id=1iatIzySOvVY6odPSMFJ8iEXDZ_66ZaBj", "Full Name": "Muhammed rafi TA", "DOB": "2007-07-29T00:00:00", "Address": "Thottapady house udma padinhar", "Phone number": 8714976861.0, "Blood group": "A", "WhatsApp Number": 8714976861.0, "Fathers Name": "Abdulla kunhi", "Interest": "Yes ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed rafi TA (Member #48), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-11T21:53:37.860000", "gmail": "abdulshuhaib04@gmail.com", "Photo": "https://drive.google.com/open?id=1yU7PZzcp5AboCMYSlZJwOcXPQgyAL1ZL", "Full Name": "Abdul Shuhaib", "DOB": "2000-02-18T00:00:00", "Address": "KV house udma west   P.O udma", "Phone number": 9562757770.0, "Blood group": "O+", "WhatsApp Number": 9562757770.0, "Fathers Name": "Abdul Rahman", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul Shuhaib (Member #49), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-11T21:57:38.862000", "gmail": "ashfaqwest1@gmail.com", "Photo": "https://drive.google.com/open?id=1CbwWl_i9GV2PoB4A0afCjTrS6y9ncYD3", "Full Name": "AHAMMED ASHFAQ PY", "DOB": "2005-10-03T00:00:00", "Address": "UDUMA PADHINAR ", "Phone number": 8139024116.0, "Blood group": "O+", "WhatsApp Number": 8139024116.0, "Fathers Name": "ABBAS P", "Interest": "O+", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear AHAMMED ASHFAQ PY (Member #50), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-14T07:21:54.293000", "gmail": "shazeenmohammed123@gmail.com", "Photo": "https://drive.google.com/open?id=11I13f_6wXVrLv1RLuU1vHeXfP8ch7CxP", "Full Name": "SHAZEEN MUHAMMED.K.M", "DOB": "2006-05-18T00:00:00", "Address": "Hira manzil udma padinhar", "Phone number": 7994633522.0, "Blood group": "B+", "WhatsApp Number": 7994633522.0, "Fathers Name": "MOHAMMED NAJEEB.K.M", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear SHAZEEN MUHAMMED.K.M (Member #51), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-14T12:54:18.406000", "gmail": "Abdulrahmanshahil03@gmail.com", "Photo": "https://drive.google.com/open?id=1n10UOHtaOC82FQxnLBUN9ZXnxg6nTziO", "Full Name": "Abdul Rahman Shahil", "DOB": "2004-05-17T00:00:00", "Address": "Kudroli H udma west", "Phone number": 8590732429.0, "Blood group": "Ab+ve", "WhatsApp Number": 8590732429.0, "Fathers Name": "illyas km", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul Rahman Shahil (Member #52), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-14T20:46:30.625000", "gmail": "Hashimwest123@gmail.com", "Photo": "https://drive.google.com/open?id=1VEcXHm5PlCJEcbIwMW2ZQxreQ75TkfQp", "Full Name": "Abdul hashim T. M", "DOB": "2001-09-28T00:00:00", "Address": "Thayath house; udma padinhar (po) udma", "Phone number": 9995122246.0, "Blood group": "A+", "WhatsApp Number": 9995122246.0, "Fathers Name": "Haris T. M", "Interest": "Politics,Sports ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul hashim T. M (Member #53), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-14T23:15:40.160000", "gmail": "salmanfarismsofficial@gmail.com", "Photo": "https://drive.google.com/open?id=1vpZMec1ulCMD5J0I-N5HRYgjn44zqVlS", "Full Name": "Salman Faris MS", "DOB": "1997-08-14T00:00:00", "Address": "S s villa, udma padinher, udma, kasaragod ", "Phone number": 7907745545.0, "Blood group": "B positive ", "WhatsApp Number": 7907745545.0, "Fathers Name": "Mohammad shareef ", "Interest": "Sports ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Salman Faris MS (Member #54), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-15T19:34:46.214000", "gmail": "abbasibrahim5625@gmail.com", "Photo": "https://drive.google.com/open?id=1vJaKRoeArVMjR0wP93Dlt1ud_VB5-khN", "Full Name": "ABBAS.T", "DOB": "2005-04-12T00:00:00", "Address": "THAYATH HOUSE , UDMA PADINHAR", "Phone number": 7994796414.0, "Blood group": "A+", "WhatsApp Number": 7994796414.0, "Fathers Name": "EBRAHIM .T.A", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ABBAS.T (Member #55), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-16T16:20:57.208000", "gmail": "faheemtmfaheemtm@gmail.com", "Photo": "https://drive.google.com/open?id=1G60Xw6vn6PYiC_79c6CrMBf-2p6rViyR", "Full Name": "Faheemudheen ", "DOB": "2004-04-24T00:00:00", "Address": "Moideen kunhi T. A thayath house udma padinhar", "Phone number": 7306176406.0, "Blood group": "B+ve", "WhatsApp Number": 7306176406.0, "Fathers Name": "Moideen kunhi T. A", "Interest": "Yes", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Faheemudheen  (Member #56), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-16T19:42:22.159000", "gmail": "sareeabbas748@gmail.com", "Photo": "https://drive.google.com/open?id=1vXF1s7qZOxrE2Kf-wdxBoo_LBfYZ2h-_", "Full Name": "MOHAMMED MUBASHIR PM", "DOB": "2008-11-02T00:00:00", "Address": "Udma padinhar ", "Phone number": 9544448413.0, "Blood group": "O+", "WhatsApp Number": 9544448413.0, "Fathers Name": "ABDUL MUTHALIB PH", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MOHAMMED MUBASHIR PM (Member #57), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-16T19:48:04.694000", "gmail": "MOHAMMEDUDMA90@gmail.com", "Photo": "https://drive.google.com/open?id=1Fh85YxWo2Q_D1d8xCfVhyQ8-ryv5s10M", "Full Name": "MOHAMMED ISHAQ", "DOB": "2007-12-15T00:00:00", "Address": "Udma padinhar ", "Phone number": 785675262.0, "Blood group": "A+", "WhatsApp Number": 785675262.0, "Fathers Name": "ISMAIL", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MOHAMMED ISHAQ (Member #58), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-17T12:28:39.827000", "gmail": "nihalnasarpara@gmail.com", "Photo": "https://drive.google.com/open?id=1E6qGA4Nml0fqQfhJiA6GXZD1LtZ-Ref6", "Full Name": "Mohammed Nihal ", "DOB": "2010-02-15T00:00:00", "Address": "Koppal Parayil house", "Phone number": 7591902165.0, "Blood group": "B negative ", "WhatsApp Number": 7591902165.0, "Fathers Name": "Nasar para", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Nihal  (Member #59), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-17T13:24:52.759000", "gmail": "rafeeq23791@gmail.com", "Photo": "https://drive.google.com/open?id=1zSC_u7rmsqza-Mbhq70VwwHJUbPVhTxI", "Full Name": "Abdul Rafeeq KM", "DOB": "1959-10-12T00:00:00", "Address": "Hira Manzil p o udma padinhar kasaragod", "Phone number": 7994414201.0, "Blood group": "A+", "WhatsApp Number": 7994414201.0, "Fathers Name": "Kottikulam Muhammed Salih", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul Rafeeq KM (Member #60), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-17T16:31:53.792000", "gmail": "khaderwest66@gmail.com", "Photo": "https://drive.google.com/open?id=1Ab52oXR-ljM5X-610QXMeZRizFUc5sma", "Full Name": "Abdul khader", "DOB": "2004-05-06T00:00:00", "Address": "Thottapadi house", "Phone number": 9746807116.0, "Blood group": "B+", "WhatsApp Number": 9746807116.0, "Fathers Name": "Hamsa Thottapadi ", "Interest": "Kho _ kho", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul khader (Member #61), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-17T17:28:57.337000", "gmail": "fahimfa043@gmail.com", "Photo": "https://drive.google.com/open?id=1K-pIzfRgVPtOQXrYwDMF5T9Hvssoi2iG", "Full Name": "Ahammed faseeh TM", "DOB": "2007-09-18T00:00:00", "Address": "Thayath house udma padinhar ", "Phone number": 8921420245.0, "Blood group": "B+", "WhatsApp Number": 8921420245.0, "Fathers Name": "Moideen kunhi", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahammed faseeh TM (Member #62), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-17T20:31:55.906000", "gmail": "nameermohammed14@gmail.com", "Photo": "https://drive.google.com/open?id=1FeZF0riookJKDTK_pIlKi8-zzlE9aJba", "Full Name": "Nameer mohammed ", "DOB": "1999-09-22T00:00:00", "Address": "Naseera bhavan udma padinhar", "Phone number": 9747158393.0, "Blood group": "O+ ", "WhatsApp Number": 9747158393.0, "Fathers Name": "Mohammed kunhi Am ", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Nameer mohammed  (Member #63), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-17T22:37:11.745000", "gmail": "ayshathayath123@gmail.com", "Photo": "https://drive.google.com/open?id=1U7dvJ-pNgpWnvFGNiMPtuk1gTkwnDg0x", "Full Name": "Abbullkader", "DOB": "2029-03-18T00:00:00", "Address": "Thayath house", "Phone number": 7356984920.0, "Blood group": "A s+", "WhatsApp Number": 7356984920.0, "Fathers Name": "Ismail", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abbullkader (Member #64), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-18T12:01:41.935000", "gmail": "millathabbas@gmail.com", "Photo": "https://drive.google.com/open?id=1Mc97xNZrGX7d5RumPOc-kkYreaBtzNPX", "Full Name": "Abbas Millath", "DOB": "1989-06-19T00:00:00", "Address": "Uduma west tottatil house", "Phone number": "+971552546391", "Blood group": "O+", "WhatsApp Number": "+971552646391", "Fathers Name": "Shafi", "Interest": "Cricket", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abbas Millath (Member #65), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-18T13:56:52.297000", "gmail": "ilaskodurolii@gmail.com", "Photo": "https://drive.google.com/open?id=1KDvwxxR5x5ne1ya621ezFH24NFTnShg2", "Full Name": "ILLYAS KUDUROLI", "DOB": "1981-03-21T00:00:00", "Address": "KUDOROLI HOUSE", "Phone number": 7591918012.0, "Blood group": "O+", "WhatsApp Number": 7591918012.0, "Fathers Name": "MOIDEEN", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ILLYAS KUDUROLI (Member #66), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-18T15:16:23.313000", "gmail": "ahadwest11@gmail.com", "Photo": "https://drive.google.com/open?id=1YNZwVftGiMbq2-ws8rwg3-siGLkwIBQS", "Full Name": "Ahadil jameen", "DOB": "2000-12-25T00:00:00", "Address": "Abdulla manzil uduma padinhar ,Near Darul Irshad Academy, P O uduma Kasargod ", "Phone number": 9605289544.0, "Blood group": "B+", "WhatsApp Number": 9605289544.0, "Fathers Name": "Abdul rahiman ", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahadil jameen (Member #67), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-18T19:26:54.932000", "gmail": "saudamoideen786@gmail.com", "Photo": "https://drive.google.com/open?id=1tqLffzgmjqeNYGwt9Z6yxu9dLs2GPAYz", "Full Name": "Mohammad yaseen", "DOB": "2009-06-17T00:00:00", "Address": "Kovval valappil house p.o udma padinhar \n", "Phone number": 9747377064.0, "Blood group": "AB+", "WhatsApp Number": 9747377064.0, "Fathers Name": "Moideen kunhi", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammad yaseen (Member #68), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-18T20:47:11.235000", "gmail": "akshaykm366@gmail.com", "Photo": "https://drive.google.com/open?id=1GYSShmhu1T_BZDhSFjie6JFZ9YOitEzX", "Full Name": "Ashish kumar manjhi", "DOB": "2010-03-08T00:00:00", "Address": "Near, lalit resort udma padhinahr,kasaragod,kerala", "Phone number": 7643931032.0, "Blood group": "A+", "WhatsApp Number": 7643931032.0, "Fathers Name": "Dinesh kumar manjhi", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ashish kumar manjhi (Member #69), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-18T21:20:07.190000", "gmail": "saeedwest89@gmail.com", "Photo": "https://drive.google.com/open?id=1PgBRLwPeZGawPYnYkD7owHTe2kauULws", "Full Name": "Mohammed Shaheed", "DOB": "1994-08-05T00:00:00", "Address": "Udma padinhar", "Phone number": "0582403303", "Blood group": "O+", "WhatsApp Number": 9656841161.0, "Fathers Name": "Moideen kunhi", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Shaheed (Member #70), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-20T12:50:42.726000", "gmail": "Rasheedakm93@gmail.com", "Photo": "https://drive.google.com/open?id=1CPU9gBnRhl-CdFWhNiftijpVfPNaBh8L", "Full Name": "Moideen hadiy", "DOB": "2013-02-09T00:00:00", "Address": "Kovval valapp house ", "Phone number": 7510301101.0, "Blood group": "O+", "WhatsApp Number": 7510301101.0, "Fathers Name": "Muhammad ", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Moideen hadiy (Member #71), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-24T17:01:38.113000", "gmail": "ashiqforthill14@gmail.com", "Photo": "https://drive.google.com/open?id=1rz0TycGdnmJYERCxGRDJkHUw2Va3SM6i", "Full Name": "MUHAMMED ASHIQ P Y", "DOB": "2004-07-15T00:00:00", "Address": "THEKKPURAM house udma PADINHAR ", "Phone number": 9061939316.0, "Blood group": "O+ postive", "WhatsApp Number": 9061939316.0, "Fathers Name": "ABBAS P", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MUHAMMED ASHIQ P Y (Member #72), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-24T19:51:13.081000", "gmail": "thajudheenks94@gmail.com", "Photo": "https://drive.google.com/open?id=1w3itqnK7HV6oYF2FP7-alqNaKMnzbtE7", "Full Name": "Thajudheen Ks", "DOB": "2004-11-10T00:00:00", "Address": "Kudroli house udma padihar po udma ", "Phone number": 7907642225.0, "Blood group": "O+", "WhatsApp Number": 7907642225.0, "Fathers Name": "Siddik ", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Thajudheen Ks (Member #73), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-25T15:48:52.357000", "gmail": "ameenimthimam@gmail.com", "Photo": "https://drive.google.com/open?id=1h5fI1ur7LsztbiHzNwXdrnafBpgO9kOL", "Full Name": "Muhammad Ameen T", "DOB": "2000-09-21T00:00:00", "Address": "Thayath house udma padinhar p.o udma west", "Phone number": 9633029234.0, "Blood group": "A+", "WhatsApp Number": 9633029234.0, "Fathers Name": "Ibrahim t a", "Interest": "Food ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammad Ameen T (Member #74), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-25T21:24:31.427000", "gmail": "Irshuwest@gmail.com", "Photo": "https://drive.google.com/open?id=12M0XCQUE0wVwJfkVH55C0tYE4XEGQc8x", "Full Name": "MOHAMMED IRSHAD K P", "DOB": "1988-08-25T00:00:00", "Address": "ALIF MAHAL PERIYAL VALAPPU UDMA PO", "Phone number": 9947144414.0, "Blood group": "O positive ", "WhatsApp Number": 9947144414.0, "Fathers Name": "HAMEED K P", "Interest": "CRICKET ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MOHAMMED IRSHAD K P (Member #75), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-26T10:28:56.489000", "gmail": "ahmmedfadil28@gmail.com", "Photo": "https://drive.google.com/open?id=1OAaoRCLl9lIibzZv-cq817WU90NBLB9y", "Full Name": "Ahammed fadil", "DOB": "2008-08-05T00:00:00", "Address": "Thottapadi house udma padinhar", "Phone number": 9562236802.0, "Blood group": "A+", "WhatsApp Number": 9562236802.0, "Fathers Name": "Abdul Rasheed", "Interest": "Arts&sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahammed fadil (Member #76), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-26T20:34:25.224000", "gmail": "musthafapm1990@gmail.com", "Photo": "https://drive.google.com/open?id=1Eim64oNISJnCnAMBdntnNH50wgDYY9TM", "Full Name": "MUSTHAFA P M", "DOB": "1990-03-23T00:00:00", "Address": "THEKKEPURAM HOUSE, UDMA PADINHAR P O", "Phone number": 8157899134.0, "Blood group": "A positive ", "WhatsApp Number": 8157899134.0, "Fathers Name": "SUBAIR ", "Interest": "KABBADI", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MUSTHAFA P M (Member #77), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-26T21:24:21.598000", "gmail": "mashookm315@gmail.com", "Photo": "https://drive.google.com/open?id=1OXfXs-GSHhVDwfMiVX1OihwlAXScNvJK", "Full Name": "MOHIYADDIN MASHOOK", "DOB": "2001-09-04T00:00:00", "Address": "THEKKPURAM HOUSE UDMA PADINHAR", "Phone number": 7356066803.0, "Blood group": "B+", "WhatsApp Number": 7356066803.0, "Fathers Name": "T K MOHAMMED", "Interest": "Sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MOHIYADDIN MASHOOK (Member #78), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-26T21:34:14.789000", "gmail": "shihabuddinudma@gmail.com", "Photo": "https://drive.google.com/open?id=1_f8_wuerF2FC4ibJY-Ji4U1Jh-Lo1Cnv", "Full Name": "Shihabuddin", "DOB": "1998-08-12T00:00:00", "Address": "Thacharakunnil house udma padinhar P/o udma kasaragod", "Phone number": 9562868337.0, "Blood group": "AB+", "WhatsApp Number": 9562868337.0, "Fathers Name": "Saidu", "Interest": "Business", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Shihabuddin (Member #79), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-26T21:37:06.839000", "gmail": "abdulmashood9633@gmail.com", "Photo": "https://drive.google.com/open?id=1PLLFKrdOQc41JhqEGOPiMPlfPYrWANGR", "Full Name": "Abdul mashood", "DOB": "2000-04-25T00:00:00", "Address": "Khaliar valappil", "Phone number": 9633803379.0, "Blood group": "0+", "WhatsApp Number": 9633803379.0, "Fathers Name": "Muhammad ", "Interest": "Sports ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul mashood (Member #80), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-26T21:41:46.798000", "gmail": "bayisbachu2@gmail.com", "Photo": "https://drive.google.com/open?id=10cvxCidA5Cc67kDeKujfVD6S5nnevrtk", "Full Name": "Abdul bayz", "DOB": "2007-07-30T00:00:00", "Address": "Udma padinjar", "Phone number": 9567017840.0, "Blood group": "E", "WhatsApp Number": 9567017840.0, "Fathers Name": "Abdul basheer", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul bayz (Member #81), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-26T21:43:44.010000", "gmail": "sahilwest1234@gmail.com", "Photo": "https://drive.google.com/open?id=1jSbaTa_sRC5uvo8wgNu0Yyu-zJaf4jH4", "Full Name": "Sahil ", "DOB": "1993-12-02T00:00:00", "Address": "Udma padinhar", "Phone number": 9746680670.0, "Blood group": "O+", "WhatsApp Number": "0524375686", "Fathers Name": "Hassainar", "Interest": "Sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Sahil  (Member #82), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-26T21:50:34.352000", "gmail": "mhdmuzammil8706@gmail.com", "Photo": "https://drive.google.com/open?id=1RDif8mtfZhQeDAYuchpxnc5GBrIa_Noe", "Full Name": "Muhammed muzammil. T. M", "DOB": "1994-04-04T00:00:00", "Address": "Theruvath house udma padinchar", "Phone number": 8606119543.0, "Blood group": "A+", "WhatsApp Number": 8606119543.0, "Fathers Name": "Muhammed. T", "Interest": "Food and arts and sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed muzammil. T. M (Member #83), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-26T21:59:00.892000", "gmail": "ijazudma@gmail.com", "Photo": "https://drive.google.com/open?id=1lbfc0Ht_m_6bOG4PtbyiQlS6lSXGHUFW", "Full Name": "Aboobacker Ijaz", "DOB": "2000-02-02T00:00:00", "Address": "Kanniyil House, udma", "Phone number": 9567791970.0, "Blood group": "O+", "WhatsApp Number": 9567791970.0, "Fathers Name": "Ibrahim kovval", "Interest": "Arts&sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Aboobacker Ijaz (Member #84), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-26T23:06:18.971000", "gmail": "riyazredeye.33@gmail.com", "Photo": "https://drive.google.com/open?id=1BrX3G-n9FfWfU6xetkZU3wD_c_RjxtWJ", "Full Name": "Mohammed Riyaz", "DOB": "1998-12-26T00:00:00", "Address": "Ak villa Udma west p.o udma,kasargod", "Phone number": 8714321944.0, "Blood group": "A+", "WhatsApp Number": 971509420796.0, "Fathers Name": "ABDULLA KUNHI k.k", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Riyaz (Member #85), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-27T00:37:57.082000", "gmail": "muflimuppi@gmail.com", "Photo": "https://drive.google.com/open?id=18RTu-w1fji6tIZXLzlOo9hfOO5O7KoC0", "Full Name": "Muhammed Muflih. KV", "DOB": "2008-02-13T00:00:00", "Address": "Kovval valappil house", "Phone number": 8129869732.0, "Blood group": "O+", "WhatsApp Number": 8129869732.0, "Fathers Name": "Mohammed Kunhi KV", "Interest": "Games", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed Muflih. KV (Member #86), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-27T13:12:36.894000", "gmail": "rashidudma@gmail.com", "Photo": "https://drive.google.com/open?id=1aK6pAt8WcnvV5TrHvD-QIBpAVXFntYAZ", "Full Name": "Rashid K V A ", "DOB": "1984-03-14T00:00:00", "Address": "Udma west ", "Phone number": "+96566124945", "Blood group": "Ab+", "WhatsApp Number": "+96566124945", "Fathers Name": "Amoo", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Rashid K V A  (Member #87), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-27T14:31:50.829000", "gmail": "aslamwest22@gmail.com", "Photo": "https://drive.google.com/open?id=1wcFHVG2hoO-9JT9RJpPhnnKKWi4fzlHx", "Full Name": "Aslam Thottappadi", "DOB": "1981-10-23T00:00:00", "Address": "Thottappadi House udma padinhar", "Phone number": 9562370821.0, "Blood group": "B+", "WhatsApp Number": 9562370821.0, "Fathers Name": "Mohammed Kunji", "Interest": "Dance", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Aslam Thottappadi (Member #88), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-27T15:02:00.550000", "gmail": "hassanwesr94@gmail.com", "Photo": "https://drive.google.com/open?id=1_s0QIsXluyV5dKisPAbi48yRSvwD_aTJ", "Full Name": "Muhammed Hassan", "DOB": "2002-09-02T00:00:00", "Address": "Pandiyala House udma padinhar", "Phone number": 8113035838.0, "Blood group": "O+ ve", "WhatsApp Number": 8113035838.0, "Fathers Name": "Abdul Muthalib PH", "Interest": "Sports - Activities ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed Hassan (Member #89), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-27T15:14:18.164000", "gmail": "ahammedafsal102@gmail.com", "Photo": "https://drive.google.com/open?id=1Sb6oc9RD2yodaY_QsbcP-pL6EmofQKj2", "Full Name": "Ahammed Afsal TM", "DOB": "2002-11-01T00:00:00", "Address": "Thayath house udma padinhar", "Phone number": "+91 95672 68990", "Blood group": "O+", "WhatsApp Number": "+91 95672 68990", "Fathers Name": "Mohammed Kunhi", "Interest": "Sports activities ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahammed Afsal TM (Member #90), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-27T17:54:39.110000", "gmail": "sameermeethal786@gmail.com", "Photo": "https://drive.google.com/open?id=1bePOBae9MMGePRy_52TCIlLEShgsNooN", "Full Name": "Mohammed Sameer MA", "DOB": "1981-02-19T00:00:00", "Address": "Meethal house ", "Phone number": 9633098313.0, "Blood group": "O+", "WhatsApp Number": "0502214719", "Fathers Name": "Abdulla kunhi", "Interest": "Sports social work", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Sameer MA (Member #91), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-27T18:41:54.231000", "gmail": "ambachustorm@gmail.com", "Photo": "https://drive.google.com/open?id=1LDHN3QRw1d1eSbwLwkmmlAs0ISky4gH6", "Full Name": "Abbas", "DOB": "1998-03-15T00:00:00", "Address": "Hydervalappil House udma padinhar", "Phone number": 9526532206.0, "Blood group": "O- ve", "WhatsApp Number": 9526532206.0, "Fathers Name": "Moideen kunhi BM", "Interest": "Sports , Social Work", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abbas (Member #92), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-28T01:26:13.594000", "gmail": "amshareef121@icloud.com", "Photo": "https://drive.google.com/open?id=1gqvhV-6edbkzJ1WR7Sf-wBE3XuxLz9kb", "Full Name": "Mohammed shareef pa", "DOB": "2000-06-05T00:00:00", "Address": "Fathima manzil Thottapady house udma padinhar ", "Phone number": "+919526013467", "Blood group": "O+", "WhatsApp Number": "+971505729894", "Fathers Name": "Abbas p", "Interest": "Sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed shareef pa (Member #93), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-28T17:41:21.095000", "gmail": "jamalthayath@gmail.com", "Photo": "https://drive.google.com/open?id=1iwCUPwGV7qMKDYAm4MqEzE09pBq_e5vZ", "Full Name": "mohamed jamaludheen", "DOB": "1996-05-20T00:00:00", "Address": "Thayath house.udma padinhar", "Phone number": 9995064326.0, "Blood group": "O", "WhatsApp Number": 9995064326.0, "Fathers Name": "Abdul hameed", "Interest": "Sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear mohamed jamaludheen (Member #94), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-29T16:28:12.849000", "gmail": "rizwanwest94@gmail.com", "Photo": "https://drive.google.com/open?id=1NWjn4L0WIyFsXa2mWx7ON-XZvIe23lq8", "Full Name": "Ahamed Rizwan KA", "DOB": "2005-11-11T00:00:00", "Address": "Kovval valappil udma padinhar", "Phone number": 9895227235.0, "Blood group": "Nil", "WhatsApp Number": 9895227235.0, "Fathers Name": "Abdul khader", "Interest": "Sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahamed Rizwan KA (Member #95), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-29T16:47:26.659000", "gmail": "mohdsuhailsulu9131@gmail.com", "Photo": "https://drive.google.com/open?id=1JNwC8Ib0_y7ACj27N_rRXLLTPbh4I1m_", "Full Name": "Muhammed suhail", "DOB": "2005-06-26T00:00:00", "Address": "Uduma Padinhar kovval valappil house", "Phone number": 7592866722.0, "Blood group": "B+", "WhatsApp Number": 7592866722.0, "Fathers Name": "Subair", "Interest": ". ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed suhail (Member #96), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-29T17:02:19.397000", "gmail": "mohammednmohd68@gmail.com", "Photo": "https://drive.google.com/open?id=1D1DzPA-iVfQ6BNmaSez67OWRjlIG3T2j", "Full Name": "Mohammed.N", "DOB": "2010-08-02T00:00:00", "Address": "Udma padinhar-meethal vallapu", "Phone number": 8156844793.0, "Blood group": "B+ve", "WhatsApp Number": 8156844793.0, "Fathers Name": "Noorudheen", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed.N (Member #97), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-29T21:33:15.705000", "gmail": "jehfarwest1020@gmail.con", "Photo": "https://drive.google.com/open?id=1TgmCUKDYOqdTr3_a_e09vfiJvIF3PTJU", "Full Name": "Jehfar Rashid TV", "DOB": "1987-10-25T00:00:00", "Address": "Jafar Manzil, Resort road,Near badar masjid,Uduma padinhar ,Kasaragod 671319", "Phone number": 9061258375.0, "Blood group": "B+ve", "WhatsApp Number": 9061258375.0, "Fathers Name": "Mohammed kunhi TV", "Interest": "Sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Jehfar Rashid TV (Member #98), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-29T21:37:37.377000", "gmail": "ichui841@gmail.com", "Photo": "https://drive.google.com/open?id=1O86M3JvMVpIfyrYbeAvwujj70LRTG760", "Full Name": "IRSHAD A", "DOB": "1996-10-18T00:00:00", "Address": "kaleer valapp udma padinhar", "Phone number": 9846407798.0, "Blood group": "A+", "WhatsApp Number": 9846407798.0, "Fathers Name": "Mohammed", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear IRSHAD A (Member #99), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T12:25:36.673000", "gmail": "Aathifzameel@gmail.com", "Photo": "https://drive.google.com/open?id=1MnL9i1Dqv7CfhpdwKY0TAPZrKhytdzN-", "Full Name": "Athif zameel t", "DOB": "2010-09-02T00:00:00", "Address": "Thayath house", "Phone number": 9567120221.0, "Blood group": "A+ve", "WhatsApp Number": 9567120221.0, "Fathers Name": "Mohammed kunhi", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Athif zameel t (Member #100), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T12:30:14.164000", "gmail": "shaz123@gmail.com", "Photo": "https://drive.google.com/open?id=1SBMrlEHHUZZU56tYwBMZG3Ymh5Qyylsr", "Full Name": "Mohammed shaz", "DOB": "2012-01-23T00:00:00", "Address": "Zulaikas", "Phone number": 8138982158.0, "Blood group": "B+ve", "WhatsApp Number": 8138982158.0, "Fathers Name": "Mohammed saliy y", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed shaz (Member #101), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T12:34:11.646000", "gmail": "ramzan@gmail.com", "Photo": "https://drive.google.com/open?id=12d2_3qexiBCzmH9cNXQVt7baTtm7Po6K", "Full Name": "Mohammed ramzan p.s", "DOB": "2012-03-05T00:00:00", "Address": "Janma kadapuram", "Phone number": 9544442525.0, "Blood group": "B+ve", "WhatsApp Number": 9544442525.0, "Fathers Name": "Mohammed Sabeer", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed ramzan p.s (Member #102), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T12:45:08.770000", "gmail": "sabith0893@gmail.com", "Photo": "https://drive.google.com/open?id=1AGyJBHn7dyrtHYbnO4xAR-Jc8gwFP-Gq", "Full Name": "Moideen Sabith Zain", "DOB": "2002-03-18T00:00:00", "Address": "Shuhaib Mahal \nUdmawest", "Phone number": 7356089332.0, "Blood group": "A+", "WhatsApp Number": 7356089332.0, "Fathers Name": "Abdulla BM", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Moideen Sabith Zain (Member #103), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T12:56:49.013000", "gmail": "basitmahroof@gmail.com", "Photo": "https://drive.google.com/open?id=16o2jpSC1LTr7b1VIghvObutjVUagZse9", "Full Name": "MISBAHUDDEEN. T", "DOB": "2024-07-30T00:00:00", "Address": "Thekkappuram hous", "Phone number": 8129608524.0, "Blood group": "O+", "WhatsApp Number": 8129608524.0, "Fathers Name": "Usman. T. A", "Interest": "sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MISBAHUDDEEN. T (Member #104), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T14:39:15.018000", "gmail": "rizwan123@gmail.com", "Photo": "https://drive.google.com/open?id=1J7f5NfP2I9y4paxpubdncFukPRiW369U", "Full Name": "Mohammed rizwan r", "DOB": "2012-11-21T00:00:00", "Address": "Rizwanmanzil", "Phone number": 7025469982.0, "Blood group": "O+ve", "WhatsApp Number": 70255469982.0, "Fathers Name": "Razak", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed rizwan r (Member #105), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T14:43:55.739000", "gmail": "fouzan1234@gmail.com", "Photo": "https://drive.google.com/open?id=16NJRhUtb7QsgYuT2ezmRdb66-Mfcr6HW", "Full Name": "Muhammed fouzan", "DOB": "2012-06-09T00:00:00", "Address": "Udma padinhar", "Phone number": 9745900207.0, "Blood group": "B+ve", "WhatsApp Number": 9745900207.0, "Fathers Name": "Muhammed ali", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed fouzan (Member #106), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T14:47:42.346000", "gmail": "ajnas1234@gmil.com", "Photo": "https://drive.google.com/open?id=1omzD-q9g1cNcr8GX77HbYFfzUa6SafHz", "Full Name": "Muhammed ajnas pp", "DOB": "2012-02-12T00:00:00", "Address": "Udma padinhar", "Phone number": 9544300957.0, "Blood group": "O+ve", "WhatsApp Number": 9544300957.0, "Fathers Name": "Abdul samad pp", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed ajnas pp (Member #107), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T14:52:15.709000", "gmail": "mizal123@gmail.com", "Photo": "https://drive.google.com/open?id=1F3y4zSk5rOyWsevi_t3F63CdzHkOXwzK", "Full Name": "Muhammed mizal ph", "DOB": "2012-12-21T00:00:00", "Address": "Udma padinhar", "Phone number": 9605481015.0, "Blood group": "B+ve", "WhatsApp Number": 9605481015.0, "Fathers Name": "Haris", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed mizal ph (Member #108), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T15:03:08.916000", "gmail": "Shamilabdullah20066@gmail.com", "Photo": "https://drive.google.com/open?id=1Mjb1XaJ3ru80GAOOGYyk5IV3JQAUdxq5", "Full Name": "SHAMIL ABDULLAH A", "DOB": "2006-10-13T00:00:00", "Address": "KOVVAL VALLAPIL HOUSE ", "Phone number": 9778777458.0, "Blood group": "A+", "WhatsApp Number": 9778777458.0, "Fathers Name": "K V MUHMMED ASHRAF", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear SHAMIL ABDULLAH A (Member #109), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-30T15:09:13.521000", "gmail": "rafi123@gmil.com", "Photo": "https://drive.google.com/open?id=11DFnxGvXvXSoscqRYjgHgwzeVKLNc8b1", "Full Name": "Muhammed rafi ma", "DOB": "2012-06-06T00:00:00", "Address": "Udma padinhar", "Phone number": 7356811552.0, "Blood group": "O+ve", "WhatsApp Number": 7356811552.0, "Fathers Name": "Aslam", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed rafi ma (Member #110), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-07-31T13:56:04.394000", "gmail": "shafimohamed71015@gmail.com", "Photo": "https://drive.google.com/open?id=1Aeceh_qwDUcq0ZEt2RomSHruXgL10Pfj", "Full Name": "MOHAMMED MISSHAB", "DOB": "2011-12-08T00:00:00", "Address": "Jahfar manzil udma padinhar", "Phone number": 9745956569.0, "Blood group": ".", "WhatsApp Number": 9745956569.0, "Fathers Name": "RIYAS MOIDEEN", "Interest": "Sports ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MOHAMMED MISSHAB (Member #111), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-01T22:33:28.986000", "gmail": "sajitharahiman84@gmail.com", "Photo": "https://drive.google.com/open?id=19vQ4eMQnV4VU7sU4ZHnWjytTafuTZTMV", "Full Name": "Muhammed Ashiq.B", "DOB": "2008-08-13T00:00:00", "Address": "Bevoori house", "Phone number": 9847472362.0, "Blood group": "B+", "WhatsApp Number": 9847472362.0, "Fathers Name": "Abdulrahiman", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed Ashiq.B (Member #112), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-02T21:12:07.660000", "gmail": "ahmedishaqkk07@gmail.com", "Photo": "https://drive.google.com/open?id=1WGcr2NZjBUIBFfnCOQQN0N8ckb_IjnZ1", "Full Name": "AHMED ISHAK KK", "DOB": "2000-07-13T00:00:00", "Address": "Rahmath manzil kottakunnu", "Phone number": 8089359503.0, "Blood group": ".", "WhatsApp Number": 8089359503.0, "Fathers Name": "KK IBRAHIM", "Interest": "sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear AHMED ISHAK KK (Member #113), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-03T14:35:11.743000", "gmail": "luttappi184@gmail.com", "Photo": "https://drive.google.com/open?id=11t3iDi7is8KaeLbiTTzM2hkcZdfBr1R_", "Full Name": "Nihal abdulla ", "DOB": "2008-05-01T00:00:00", "Address": "PA house kizhakekara", "Phone number": 7560927338.0, "Blood group": "A+ve", "WhatsApp Number": 7560927338.0, "Fathers Name": "Mohammed shereef", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Nihal abdulla  (Member #114), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-04T16:00:57.878000", "gmail": "Abdullapk4001@gmail.com", "Photo": "https://drive.google.com/open?id=1x5c8P97RhD4oBN1y7P0ytoap-CMVuCCc", "Full Name": "Abdulla pk", "DOB": "2009-06-12T00:00:00", "Address": "Kariyal valappu po udma padinhar", "Phone number": 9961744001.0, "Blood group": "B+ve", "WhatsApp Number": 9961744001.0, "Fathers Name": "Khalid pk", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdulla pk (Member #115), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-05T21:21:22.735000", "gmail": "Mohammedkunhi935@gmail.com", "Photo": "https://drive.google.com/open?id=1xaWvcUbraNjL6C5hNPLjIwOTgRWGmFdT", "Full Name": "Muhammedkunhi", "DOB": "2007-05-19T00:00:00", "Address": "Udma padinhar bevoori razmina villa kasaragod ", "Phone number": 7909204004.0, "Blood group": "O+", "WhatsApp Number": 7909204004.0, "Fathers Name": "Abdul rahman", "Interest": 50.0, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammedkunhi (Member #116), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-05T21:28:05.262000", "gmail": "samadwest1033@gmail.com", "Photo": "https://drive.google.com/open?id=1-xzUY0nVciKb-v8QIW-Cz2apdV6HjddH", "Full Name": "ABDUL SAMAD", "DOB": "2005-11-28T00:00:00", "Address": "Udma padinhar \nThasleema manzil ", "Phone number": 7070033833.0, "Blood group": "A+", "WhatsApp Number": 7070033833.0, "Fathers Name": "Abdulla kunhi T K", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ABDUL SAMAD (Member #117), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-10T17:09:53.147000", "gmail": "rafiwest94@gmail.com", "Photo": "https://drive.google.com/open?id=1BQl2HLRzoYhQAuD8Osq61TOr-DTuITsJ", "Full Name": "Mohammed Rafil KA", "DOB": "2012-09-02T00:00:00", "Address": "Kovval valappil  udma padinhar", "Phone number": 9961517235.0, "Blood group": "Nil", "WhatsApp Number": 9961517235.0, "Fathers Name": "ABDUL KHADER", "Interest": "Artsandsports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Rafil KA (Member #118), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-10T19:38:30.922000", "gmail": "ahmedmunazilkv@gmail.com", "Photo": "https://drive.google.com/open?id=1d_2MD4dikk7BuUqZS1pR2lybCnrGmEVm", "Full Name": "Ahmed Munazil. KV", "DOB": "2011-06-15T00:00:00", "Address": "Kovval valapp", "Phone number": "+91 81298 69732", "Blood group": "Nil", "WhatsApp Number": "+91 81298 69732", "Fathers Name": "Mohammed Kunhi KV", "Interest": "Artsandsports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahmed Munazil. KV (Member #119), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-10T23:38:37.935000", "gmail": "suluahmed78@gmail.com", "Photo": "https://drive.google.com/open?id=1E6HXzhbzIqUHSFxowaTc52ZFZm_nkEtV", "Full Name": "Mohammed Suhail K A", "DOB": "2002-03-07T00:00:00", "Address": "Thacharakunnil house, udma padinhar ", "Phone number": 9526547971.0, "Blood group": "O+", "WhatsApp Number": 9526547971.0, "Fathers Name": "Ahammed K A", "Interest": "Cricket,Football,Food", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Suhail K A (Member #120), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-19T22:00:07.490000", "gmail": "shahad123@gmail.com", "Photo": "https://drive.google.com/open?id=122yJX65uP6ravr0QKm3M2gszsX2pS4J8", "Full Name": "Mohammed Shahad", "DOB": "2009-10-21T00:00:00", "Address": "Kamar manzin, udma west 671319", "Phone number": 9562237098.0, "Blood group": "A+", "WhatsApp Number": 8891162098.0, "Fathers Name": "Shamsudheen", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed Shahad (Member #121), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-20T11:09:19.241000", "gmail": "Muhammedrazik1234@gmail.com", "Photo": "https://drive.google.com/open?id=16eDjv4TWA6nSjteyRdp8ztpVrdsDziBf", "Full Name": "Muhammed Razik MR", "DOB": "2009-10-01T00:00:00", "Address": "Udmapadinhar", "Phone number": 7306204685.0, "Blood group": "B+ve", "WhatsApp Number": 7306204685.0, "Fathers Name": "Rafeeque", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed Razik MR (Member #122), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-20T15:30:32.201000", "gmail": "suhailwest11@gmail.com", "Photo": "https://drive.google.com/open?id=1HBvh8Vf8CWuHz5AJCQvvDVMCiEG958tZ", "Full Name": "Suhail Kv", "DOB": "1993-12-02T00:00:00", "Address": "Udam padinhar, kasaragod", "Phone number": "+971566910013", "Blood group": "O+", "WhatsApp Number": "0566910013", "Fathers Name": "Hassainar kv", "Interest": "Sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Suhail Kv (Member #123), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-20T15:54:52.559000", "gmail": "ahadpadinhqr237@gmail.com", "Photo": "https://drive.google.com/open?id=17Znze7_7tNT8DTSxFTo44J9bDj9HFZFA", "Full Name": "ABDUL AHAD K", "DOB": "1995-01-15T00:00:00", "Address": "Hira manzil,udma padinhar", "Phone number": "00971581357667", "Blood group": "B+", "WhatsApp Number": "00971581357667", "Fathers Name": "MOHAMMED NAJEEB", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ABDUL AHAD K (Member #124), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-20T16:58:22.579000", "gmail": "abdullama196@gmail.com", "Photo": "https://drive.google.com/open?id=1P1uZdH7m9HtTBa_ADqHLKeIz4VqKj5rI", "Full Name": "ABDULLA KUNHI MA ", "DOB": "1995-08-11T00:00:00", "Address": "MEETHAL HOUSE", "Phone number": 9544429612.0, "Blood group": "O+", "WhatsApp Number": "00971564324001", "Fathers Name": "ABDUL RAZACK", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ABDULLA KUNHI MA  (Member #125), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-20T17:03:09.462000", "gmail": "jashiwst@gmail.com", "Photo": "https://drive.google.com/open?id=1kN5SqvLzUQuhuYJUoCm6E1VXpxHj-ln4", "Full Name": "MOHAMMED JASHIR.KP", "DOB": "1995-12-22T00:00:00", "Address": "KP HOUSE UDMA PADINHAR", "Phone number": "0525588747", "Blood group": "AB+", "WhatsApp Number": "+971525588747", "Fathers Name": "BASHEER", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MOHAMMED JASHIR.KP (Member #126), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-20T17:08:23.318000", "gmail": "rashiwest047@gmail.com", "Photo": "https://drive.google.com/open?id=1qZTKcu0LWeV7euKtK0y03T4sm61xLule", "Full Name": "Rashid Yousaf Kannamkulam Abdulla", "DOB": "1996-03-02T00:00:00", "Address": "Kannamkulam Residence, Kizhakkekara, P.O udma Kasaragod", "Phone number": 7558058047.0, "Blood group": "A+", "WhatsApp Number": 7558058047.0, "Fathers Name": "Yousaf KA", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Rashid Yousaf Kannamkulam Abdulla (Member #127), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-20T17:20:11.515000", "gmail": "majeedtheruvath3@gmail.com", "Photo": "https://drive.google.com/open?id=1HuDBtUX_RYUcUVvEiF3J5QwFnVZ4pcVs", "Full Name": "abdul majeed. T. M", "DOB": "1981-11-10T00:00:00", "Address": "theruvath house. Udma west", "Phone number": "00965 60740315", "Blood group": "A+", "WhatsApp Number": "00965 60740315", "Fathers Name": "Mohammed theruvath", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear abdul majeed. T. M (Member #128), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-20T21:01:33.468000", "gmail": "manafbh6@gmail.com", "Photo": "https://drive.google.com/open?id=1jSwwuNrBuwdv8QH4G9wBjamsw-GBPZxO", "Full Name": "Aamir Hussain", "DOB": "2009-11-30T00:00:00", "Address": "kudroli house. Udma Padinjar ", "Phone number": 9961520993.0, "Blood group": "A+", "WhatsApp Number": 9961520993.0, "Fathers Name": "manaf", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Aamir Hussain (Member #129), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-20T21:06:34.116000", "gmail": "riyakanni@gmail.com", "Photo": "https://drive.google.com/open?id=1OQnSNDtkpxwt2bKswDiSrU0uTpnYIYWI", "Full Name": "riya kanni", "DOB": "1984-04-25T00:00:00", "Address": "alif mahal, way to lalit", "Phone number": 9048144414.0, "Blood group": "O+", "WhatsApp Number": 9048144414.0, "Fathers Name": "hameed", "Interest": "cricket,fishing", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear riya kanni (Member #130), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-21T00:47:59.952000", "gmail": "Yousuf8055@yahoo.com", "Photo": "https://drive.google.com/open?id=1BNiKxFuIuAamSSOdn5nqChMEQnNIXInC", "Full Name": "Yousuf", "DOB": "1992-05-18T00:00:00", "Address": "Noufara manzil udma west udma kasaragod ", "Phone number": "+91 9645558055", "Blood group": "B+", "WhatsApp Number": "+971 55 806 9631", "Fathers Name": "Mohammed kunhi ", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Yousuf (Member #131), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-21T18:21:57.429000", "gmail": "abdullahabi2023@gmail.com", "Photo": "https://drive.google.com/open?id=1gff20YpX-Utit0xUduVAdQGHf2V4XwAP", "Full Name": "Fadhil Abdullah cm", "DOB": "2013-02-03T00:00:00", "Address": "Kovval valappil house uduma Padinhar", "Phone number": 7560979562.0, "Blood group": "A+", "WhatsApp Number": 7560979562.0, "Fathers Name": "Abdullah cm", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Fadhil Abdullah cm (Member #132), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-21T18:31:40.474000", "gmail": "raseenarazin0@gmail.com", "Photo": "https://drive.google.com/open?id=1tZ4caZtWoZtWR2cEAorcrjTeSz97WdUv", "Full Name": "Ahamed razin ", "DOB": "2011-07-20T00:00:00", "Address": "Kovval Malappuram udma padinhar", "Phone number": 7907550458.0, "Blood group": " O+", "WhatsApp Number": 7907550458.0, "Fathers Name": "Shahul hameed pm", "Interest": "Foot ball ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ahamed razin  (Member #133), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-21T18:40:53.284000", "gmail": "zuharaabbas61@gmail.com", "Photo": "https://drive.google.com/open?id=1oKZSQguBlL70hyxSXlDrsPVpyWz-Xxje", "Full Name": "Nabhan", "DOB": "2013-10-27T00:00:00", "Address": "Kovval valappil house", "Phone number": 9567626715.0, "Blood group": "A+", "WhatsApp Number": 9567626715.0, "Fathers Name": "Abbas", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Nabhan (Member #134), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-22T19:39:02.734000", "gmail": "mohammedmon731@gmail.com", "Photo": "https://drive.google.com/open?id=1Msj0gQnQmge1CgZFAX1Ofh0N5m0e5xn9", "Full Name": "Adhil. Tm", "DOB": "2013-02-19T00:00:00", "Address": "Thayath house", "Phone number": 7559939990.0, "Blood group": "A possitive", "WhatsApp Number": 7559939990.0, "Fathers Name": "Mohamed kunhi", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Adhil. Tm (Member #135), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-22T20:51:25.230000", "gmail": "padincharkara@gmail.com", "Photo": "https://drive.google.com/open?id=189EbB8i7ZJ2XJ-8YK-oX489G3pgeGWu5", "Full Name": "Haleem Zhayan Pk", "DOB": "2013-03-09T00:00:00", "Address": "Pk House, Udma West", "Phone number": 9447449903.0, "Blood group": "B+ve", "WhatsApp Number": 8129333161.0, "Fathers Name": "Pk Abdulla", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Haleem Zhayan Pk (Member #136), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-22T21:00:41.638000", "gmail": "padincharkara@gmail.com", "Photo": "https://drive.google.com/open?id=1ArTooj5LptPJI5KH95SkyRkCS5IFWAHg", "Full Name": "Zhameel Mohammed", "DOB": "2009-12-18T00:00:00", "Address": "P.K House, Udma West", "Phone number": 9447449903.0, "Blood group": "O+ve", "WhatsApp Number": 9447449903.0, "Fathers Name": "Pk Abdulla", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Zhameel Mohammed (Member #137), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-23T23:03:01.321000", "gmail": "shamilabdullah2006@gmail.com", "Photo": "https://drive.google.com/open?id=1G-pkucgJuk3RscS4ZnIKVUnUU2JLATYz", "Full Name": "Abdul hadiy", "DOB": "2013-04-13T00:00:00", "Address": "Kovval vallapil house udma padhinhar ", "Phone number": 9633399885.0, "Blood group": "Nik", "WhatsApp Number": 9633399885.0, "Fathers Name": "Kv Muhammad Ashraf ", "Interest": "Nill", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul hadiy (Member #138), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-25T11:40:44.187000", "gmail": "udmapadinhar@gmail.com", "Photo": "https://drive.google.com/open?id=19CfF-xUXptEQ0GhlGtejlU3dpE3s6drC", "Full Name": "Habeeb rahman BH", "DOB": "2012-05-25T00:00:00", "Address": "Udma padinhar thacharakunnil house", "Phone number": 9895989115.0, "Blood group": "B+", "WhatsApp Number": 9895989115.0, "Fathers Name": "Haneefa", "Interest": "No", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Habeeb rahman BH (Member #139), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-25T11:48:02.079000", "gmail": "muhammedcb12345@gmail.com", "Photo": "https://drive.google.com/open?id=1LRIoXl_EAAIrXzvQTbNMaXV05X9cWDMj", "Full Name": "Muhammed cb", "DOB": "2013-12-14T00:00:00", "Address": "Udma padinhar", "Phone number": 9544010990.0, "Blood group": "A+", "WhatsApp Number": 9544010990.0, "Fathers Name": "Ashraf", "Interest": "No", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed cb (Member #140), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-26T20:21:46.190000", "gmail": "afrazpahu34@gmail.com", "Photo": "https://drive.google.com/open?id=1eRHgU4Z4_7R3zzVHwhvsUzk96UUh_LaM", "Full Name": "Afraz", "DOB": "2013-11-06T00:00:00", "Address": "Kannil", "Phone number": 73067171706.0, "Blood group": "A", "WhatsApp Number": 7306717106.0, "Fathers Name": "Sameer", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Afraz (Member #141), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-26T20:35:40.538000", "gmail": "nationalculb1980@gmail.com", "Photo": "https://drive.google.com/open?id=1-kYzQHs8svbrUdKJZwk6QW6NkqNAq8gC", "Full Name": "Muhammed T A", "DOB": "2015-05-18T00:00:00", "Address": "Thottapadi House udma west ", "Phone number": 7025969903.0, "Blood group": "B+", "WhatsApp Number": 7025969903.0, "Fathers Name": "Abdulrahman ", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed T A (Member #142), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-27T17:59:15.047000", "gmail": "mohmmed@gmail.com", "Photo": "https://drive.google.com/open?id=1h2Nx9zHSlvvkwYonW1ECp5lLF-SQGCvz", "Full Name": "MUAHMMED P.S", "DOB": "2013-01-24T00:00:00", "Address": "THOTTAPADY HOUSE", "Phone number": 9746109794.0, "Blood group": "A+", "WhatsApp Number": 9746109794.0, "Fathers Name": "SHIYABU", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MUAHMMED P.S (Member #143), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-27T18:03:46.061000", "gmail": "ZIDAN@gmail.com", "Photo": "https://drive.google.com/open?id=1HWd6BTyHP41rmiApjSkt43LOucbRt4Lc", "Full Name": "MUHAMMED ZIDAN", "DOB": "2012-12-31T00:00:00", "Address": "THEKKPURAM HOUSE", "Phone number": 8139024116.0, "Blood group": "+A", "WhatsApp Number": 8139024116.0, "Fathers Name": "MUHAMMED SHAREEF", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MUHAMMED ZIDAN (Member #144), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-27T18:06:52.155000", "gmail": "WASIL@GMAIL.COM", "Photo": "https://drive.google.com/open?id=1rGGkj02DnJsassne7izpXUyCGn8jV5AT", "Full Name": "MUHAMMED WASIL", "DOB": "2010-05-11T00:00:00", "Address": "THAYATH HOUSE", "Phone number": 7306008193.0, "Blood group": "A+", "WhatsApp Number": 7306008193.0, "Fathers Name": "ABDUL GAFOOR", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear MUHAMMED WASIL (Member #145), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-28T13:56:31.910000", "gmail": "thamsihab12.34@gmail.com", "Photo": "https://drive.google.com/open?id=1sk-OWiRtNSpQcs7LKZRPGJWUJvP8CIu9", "Full Name": "Muhammed Zayan ", "DOB": "2013-12-08T00:00:00", "Address": "PA MANZIL\n", "Phone number": 7994351748.0, "Blood group": "B positive", "WhatsApp Number": 7994351748.0, "Fathers Name": "Habeeb ", "Interest": "Football player", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed Zayan  (Member #146), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-30T18:58:32.466000", "gmail": "sabikhasabi20@gmail.com", "Photo": "https://drive.google.com/open?id=12MOY6x5ixL2vqBmsrrQOgdDWOHwBj_gS", "Full Name": "Abdul Rahman P K", "DOB": "2013-01-11T00:00:00", "Address": "P K House,Udma Padinhar P.O, Udma Padinhar", "Phone number": 9567568789.0, "Blood group": "AB+", "WhatsApp Number": 9567568789.0, "Fathers Name": "Abdul Sameer P K", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul Rahman P K (Member #147), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-08-31T21:32:03.398000", "gmail": "abdukodz6299@gmail.com", "Photo": "https://drive.google.com/open?id=1K3YkcEDVJKRLk6ZHfzLxRPHqgSVvdyS_", "Full Name": "Abdul Rahman", "DOB": "2001-08-04T00:00:00", "Address": "Rashid manzil kottakunnu, Udma padinhar, P.O Udma West. 671319", "Phone number": 7994057556.0, "Blood group": "B+", "WhatsApp Number": 7994057556.0, "Fathers Name": "Abdulla kunhi Abdulrahman", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul Rahman (Member #148), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-09-02T16:40:51.012000", "gmail": "bayisbachu56@gmail.com", "Photo": "https://drive.google.com/open?id=10v3XwxTgG_HNCkrG5BcP86F51wrSXSBk", "Full Name": "Abdul khadar ahnaf", "DOB": "2012-01-16T00:00:00", "Address": "Udma padinjar ", "Phone number": 9895082227.0, "Blood group": "A+", "WhatsApp Number": 9895082227.0, "Fathers Name": "Ahmad asif", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Abdul khadar ahnaf (Member #149), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-06T07:09:40.003000", "gmail": "aiman@gmail.com", "Photo": "https://drive.google.com/open?id=194RZQMMhIIs3wxNRnpVNPxb96753hsVt", "Full Name": "Aiman abdull kadher", "DOB": "2010-05-03T00:00:00", "Address": "Kannyil house", "Phone number": 8943436333.0, "Blood group": "Ab", "WhatsApp Number": 8943436333.0, "Fathers Name": "Basheer", "Interest": 0.0, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Aiman abdull kadher (Member #150), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T17:52:52.333000", "gmail": "", "Photo": "https://drive.google.com/open?id=1Cnq-lpqxLW5cEMJzWcxD-qDVTF7k_1Qv", "Full Name": "Mohammed yaseen", "DOB": "2013-08-18T00:00:00", "Address": "Saleem manzil", "Phone number": 9526848302.0, "Blood group": "O+", "WhatsApp Number": 9526848302.0, "Fathers Name": "Abdulrahman KM", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed yaseen (Member #151), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T17:54:12.962000", "gmail": "", "Photo": "https://drive.google.com/open?id=1QaCv4ux_NI_SQP0MI37WVOHPetSoDdyW", "Full Name": "Mohammedfarzin", "DOB": "2009-08-29T00:00:00", "Address": "All Faaz", "Phone number": 9497555676.0, "Blood group": null, "WhatsApp Number": 9497555676.0, "Fathers Name": "Basheermohammed", "Interest": "Football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammedfarzin (Member #152), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T17:54:46.866000", "gmail": "", "Photo": "https://drive.google.com/open?id=1fR2JMW66wRyfG5RgH6q4aYYrf54eSOwa", "Full Name": "Zishan S", "DOB": "2013-09-04T00:00:00", "Address": "Udma padinhar PA manzil", "Phone number": 9656062965.0, "Blood group": "*****", "WhatsApp Number": "************", "Fathers Name": "Sameer PA", "Interest": "Sports", "WhatsApp Link": null, "Renewal Message": "Dear Zishan S (Member #153), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T17:57:36.120000", "gmail": "", "Photo": "https://drive.google.com/open?id=16P62r50WQSrq6M6p1DQzrMIEEPapvMXz", "Full Name": "Aboobaker siddeeq", "DOB": "2014-09-25T00:00:00", "Address": "PA MANZIL AMBIKA NAGAR UDMA PADINHAR", "Phone number": 8138988239.0, "Blood group": "B+ve", "WhatsApp Number": 8138988239.0, "Fathers Name": "Mohammed Ali", "Interest": "Sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Aboobaker siddeeq (Member #154), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T17:57:57.643000", "gmail": "", "Photo": "https://drive.google.com/open?id=1UOyyP47QVO-XbMX7-L2FYKMRDVhG9cVn", "Full Name": "Mohammed affan T", "DOB": "2016-11-17T00:00:00", "Address": "Udma padinhar thayath house", "Phone number": 7356984920.0, "Blood group": null, "WhatsApp Number": 7356984920.0, "Fathers Name": "Ismail", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mohammed affan T (Member #155), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T17:59:48.403000", "gmail": "", "Photo": "https://drive.google.com/open?id=1jP94OAvWcRTSpM2_TVT9o__IviNb0RRN", "Full Name": "Muhammed Adil Ali", "DOB": "2021-08-01T00:00:00", "Address": "Mittala house ", "Phone number": 9746543239.0, "Blood group": null, "WhatsApp Number": 9746543239.0, "Fathers Name": "Abdul rahman", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammed Adil Ali (Member #156), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:01:03.065000", "gmail": "", "Photo": "https://drive.google.com/open?id=1zQWgOb-J5phLtyy1eBUbC-cdOYBIIfiY", "Full Name": "Mifzal ayan", "DOB": "2014-05-14T00:00:00", "Address": "Thayath valappu udma padinhar", "Phone number": 9747317417.0, "Blood group": null, "WhatsApp Number": 9747317417.0, "Fathers Name": "Shihab", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mifzal ayan (Member #157), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:02:34.536000", "gmail": "", "Photo": "https://drive.google.com/open?id=1UFf-FMni4nQ29-bcAFaT0qwURZtEakXp", "Full Name": "Shaan abdulla ", "DOB": "2014-02-08T00:00:00", "Address": "Meethal house ", "Phone number": null, "Blood group": "B+", "WhatsApp Number": null, "Fathers Name": "Mohammed sameer ", "Interest": "Football", "WhatsApp Link": null, "Renewal Message": "Dear Shaan abdulla  (Member #158), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:02:55.359000", "gmail": "", "Photo": "https://drive.google.com/open?id=1P6Indfc4S8V7907bNHyHQMIkV4zjsMKM", "Full Name": "ABDUL LATHEEF", "DOB": "2016-08-06T00:00:00", "Address": "Udma padinhar p.o udma padinhar", "Phone number": 8592975631.0, "Blood group": "Nill", "WhatsApp Number": 8592975631.0, "Fathers Name": "MOHAMMED KUNHI", "Interest": "Sports, arts", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ABDUL LATHEEF (Member #159), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:02:58.389000", "gmail": "", "Photo": "https://drive.google.com/open?id=1PVtyvuuJVhOdypixpD4hk9ZIfEK-SrVG", "Full Name": "Shameem Moosa", "DOB": "2014-11-20T00:00:00", "Address": "Thottapadi house udma padinhar", "Phone number": 974610974.0, "Blood group": "B+ve", "WhatsApp Number": "************", "Fathers Name": "Shihab", "Interest": "Sports", "WhatsApp Link": null, "Renewal Message": "Dear Shameem Moosa (Member #160), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:03:38.429000", "gmail": "", "Photo": "https://drive.google.com/open?id=1MBGJIApu5qognr9SBNIumAsTLuQTmIMD", "Full Name": "Ameen", "DOB": "2015-01-13T00:00:00", "Address": "Saleem manzil", "Phone number": 9526848302.0, "Blood group": "O+", "WhatsApp Number": 9526848302.0, "Fathers Name": "Abdulrahman", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Ameen (Member #161), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:03:49.355000", "gmail": "", "Photo": "https://drive.google.com/open?id=14ZGHb8r7g5-6IOpAFHgn2qaOJtgMDIpW", "Full Name": "Mohammed sinan ", "DOB": "2016-01-21T00:00:00", "Address": "Udma padinhar baithunoor", "Phone number": null, "Blood group": "A+", "WhatsApp Number": null, "Fathers Name": "Siddik", "Interest": null, "WhatsApp Link": null, "Renewal Message": "Dear Mohammed sinan  (Member #162), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:06:52.077000", "gmail": "", "Photo": "https://drive.google.com/open?id=1gCyWImX_7UQBk7fDjycn8oaGq6_DmpRi", "Full Name": "Hamraz mohammed ", "DOB": "2013-12-06T00:00:00", "Address": "Kudroli house ", "Phone number": 8590732429.0, "Blood group": "B", "WhatsApp Number": null, "Fathers Name": "Abdulla kunhi ", "Interest": "Football ", "WhatsApp Link": null, "Renewal Message": "Dear Hamraz mohammed  (Member #163), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:06:56.147000", "gmail": "", "Photo": "https://drive.google.com/open?id=1VLZ-a6CbYcuhvf-DvsIz51JKl3F7fqmv", "Full Name": "Zainul Abid", "DOB": "2013-12-02T00:00:00", "Address": "Erol house ", "Phone number": 8139024116.0, "Blood group": "Nill", "WhatsApp Number": 8139024116.0, "Fathers Name": "Abbas", "Interest": "Arts and sports", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Zainul Abid (Member #164), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:07:34.988000", "gmail": "", "Photo": "https://drive.google.com/open?id=1p_KhnfyinI0T5w1oBdr6AoSxi2n-0Pia", "Full Name": "Zayan ahammed", "DOB": "2016-07-27T00:00:00", "Address": "Saleem manzil", "Phone number": 9526848302.0, "Blood group": null, "WhatsApp Number": 9526848302.0, "Fathers Name": "Shafeeq", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Zayan ahammed (Member #165), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:08:27.772000", "gmail": "", "Photo": "https://drive.google.com/open?id=19nHewKFkghyLnFqdtfJLM-lNex5H-mMk", "Full Name": "Mohammed Azlan K S", "DOB": "2016-01-01T00:00:00", "Address": "Udma padinhar", "Phone number": "**********", "Blood group": "***", "WhatsApp Number": "**********", "Fathers Name": "Shihab", "Interest": "Sports", "WhatsApp Link": null, "Renewal Message": "Dear Mohammed Azlan K S (Member #166), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:15:22.347000", "gmail": "", "Photo": ")", "Full Name": "Mahamood Isham Ali M.k", "DOB": "2008-05-11T00:00:00", "Address": "Kovval valappil house", "Phone number": "86063 35161 ", "Blood group": "A positive ", "WhatsApp Number": "86063 35161 ", "Fathers Name": "Mohammed Ali ", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Mahamood Isham Ali M.k (Member #167), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:36:07.421000", "gmail": "", "Photo": "https://drive.google.com/open?id=16wAWD5aeCRxGoCw_vvYWB6N_MsIiRgOr", "Full Name": "Muhammed hamdan K A", "DOB": "2017-01-26T00:00:00", "Address": "Kudroli house\n", "Phone number": 9995516971.0, "Blood group": null, "WhatsApp Number": null, "Fathers Name": "Abdulla kunhi", "Interest": "Football", "WhatsApp Link": null, "Renewal Message": "Dear Muhammed hamdan K A (Member #168), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:36:43.494000", "gmail": "", "Photo": "https://drive.google.com/open?id=1SQ8oyEkCUcmCslWkAwC1vJTnVCpphNsD", "Full Name": "Muhammedsafad", "DOB": "2009-05-08T00:00:00", "Address": "Bevoori udma padinhar", "Phone number": 9995028192.0, "Blood group": null, "WhatsApp Number": 9995028192.0, "Fathers Name": "Safeer", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammedsafad (Member #169), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T18:44:18.591000", "gmail": "", "Photo": "https://drive.google.com/open?id=1zolfPOe3QULp7wRQ9WOEBgoeiF1o8jQp", "Full Name": "Farhan Mohammed Hassan", "DOB": "2013-07-02T00:00:00", "Address": "Bevoori house udma padinhar", "Phone number": 8129889222.0, "Blood group": "A+", "WhatsApp Number": 8129889222.0, "Fathers Name": "Abdul majeed", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Farhan Mohammed Hassan (Member #170), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-16T19:26:10.793000", "gmail": "", "Photo": "https://drive.google.com/open?id=1IsoihGa6Dj6IFowmTjr1f54t2MOskqzh", "Full Name": "Dhanish minhaj", "DOB": "2017-04-25T00:00:00", "Address": "Udma padinhar thasleema manzil", "Phone number": 7070033833.0, "Blood group": "—-", "WhatsApp Number": 7070033833.0, "Fathers Name": "Jamaludheen", "Interest": null, "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Dhanish minhaj (Member #171), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-17T16:26:23.708000", "gmail": "", "Photo": "https://drive.google.com/open?id=1LhDlqgQMJ3CL_sq5Bciw_U_SiINYfEUo", "Full Name": "Muhammad hisham ps", "DOB": "2013-02-05T00:00:00", "Address": "Hyderavalppu", "Phone number": 9562912603.0, "Blood group": "B+", "WhatsApp Number": 9562912603.0, "Fathers Name": "Abdul sathar", "Interest": "Football ", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear Muhammad hisham ps (Member #172), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2024-10-17T18:55:03.785000", "gmail": "", "Photo": "https://drive.google.com/open?id=1gS98D6qCebnTkI75rSV-HdJY5moljRYL", "Full Name": "ABDUL HASEEB T", "DOB": "2017-03-12T00:00:00", "Address": "THEKKEPURAM HOUSE", "Phone number": 9544012583.0, "Blood group": "A+", "WhatsApp Number": 9544012583.0, "Fathers Name": "USMAN TA", "Interest": " football", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear ABDUL HASEEB T (Member #173), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}, {"": null, "Timestamp": "2025-03-14T19:07:22.208000", "gmail": "", "Photo": "https://drive.google.com/open?id=12VX2-xJ_VOId-uj8UM9Xley90wn2DvUC", "Full Name": "AHMED MASHOOD MS", "DOB": "2001-05-05T00:00:00", "Address": "Kovval valappil house", "Phone number": 9526871656.0, "Blood group": "Nil", "WhatsApp Number": 9526871656.0, "Fathers Name": "MOHAMMED SHAFI", "Interest": "Games", "WhatsApp Link": "Send WhatsApp", "Renewal Message": "Dear AHMED MASHOOD MS (Member #174), greetings from National Arts & Sports Club! This is a friendly reminder that your club membership renewal is due. Please contact us to complete your renewal. Thank you!"}],selected=null;
+function val(o,keys){for(const k of keys)if(o[k]!=null&&String(o[k]).trim())return String(o[k]).trim();return""}
+
+function photoUrl(r){
+  let url = val(r,["Photo","Photo URL","Image","Photo Link"]);
+  if(!url) return "";
+  if(url.includes("drive.google.com/open?id=")) {
+    let id = url.split("id=")[1];
+    if(id) return `https://lh3.googleusercontent.com/d/${id}`;
+  }
+  return url;
+}
+
+function blood(r){
+  let b = val(r,["Blood group","Blood Group","Blood"]);
+  if(!b || b==="." || b==="***" || b.toLowerCase()==="nil") return "";
+  let s = b.toUpperCase().replace(/\s+/g,'').replace('POSITIVE','+').replace('NEGATIVE','-').replace('VE','');
+  if(s==="A") return "A+";
+  if(s==="B") return "B+";
+  if(s==="O") return "O+";
+  if(s==="AB") return "AB+";
+  return s;
+}
+
+function father(r){ return val(r,["Fathers Name","Father's Name","Father Name","Father"]); }
+function address(r){ return val(r,["Address","Location"]); }
+function dob(r){
+  let d = val(r,["DOB","Date of Birth","Birth Date"]);
+  if(!d) return "";
+  if(d.includes("T00:00:00")) return d.split("T")[0];
+  return d;
+}
+function gmail(r){ return val(r,["gmail","Gmail","Email","Email Address"]); }
+function interest(r){ return val(r,["Interest","Interests","Hobby"]); }
+
+function phone(r){
+  let raw = val(r,["WhatsApp Number","WhatsApp","Whatsapp Number","Phone Number","Phone","Mobile"]);
+  if(!raw) return "";
+  let clean = raw.replace(/[^0-9]/g,"");
+  if(clean.startsWith("00")) {
+    clean = clean.replace(/^00+/, "");
+  }
+  return clean;
+}
+
+function displayPhone(r){
+  let p = val(r,["Phone number","Phone Number","Phone","Mobile"]);
+  if(!p || p === "Member Name" || !/[0-9]/.test(p)) {
+    return val(r,["WhatsApp Number","WhatsApp","Whatsapp Number"])||"—";
+  }
+  return p;
+}
+
+function name(r){ return val(r,["Full Name","Name","Member Name"])||"Member"; }
+
+function mno(r){
+  let m = val(r,["Member Number","Member No","Membership No","ID"]);
+  if(m) return m;
+  let msg = val(r,["Renewal Message"]);
+  let match = msg ? msg.match(/Member #(\d+)/) : null;
+  return match ? match[1] : "";
+}
+
+function message(r){ return val(r,["Renewal Message","Message","WhatsApp Message"])||`Hello ${name(r)}, this is a message regarding your membership. Please contact us for more details.`; }
+
+function esc(x){ return String(x).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m])); }
+
+let currentViewMode = window.innerWidth < 768 ? 'card' : 'table';
+
+function setViewMode(mode) {
+  currentViewMode = mode;
+  const btnCard = document.getElementById('btnViewCard');
+  const btnTable = document.getElementById('btnViewTable');
+  if(btnCard) btnCard.classList.toggle('active', mode === 'card');
+  if(btnTable) btnTable.classList.toggle('active', mode === 'table');
+  
+  const tableWrap = document.getElementById('tableWrapContainer');
+  const cardsGrid = document.getElementById('cardsGridContainer');
+  
+  if(tableWrap && cardsGrid) {
+    if (mode === 'card') {
+      tableWrap.style.display = 'none';
+      cardsGrid.style.display = 'grid';
+    } else {
+      tableWrap.style.display = 'block';
+      cardsGrid.style.display = 'none';
+    }
+  }
+}
+
+function toggleMobileSidebar() {
+  const sb = document.querySelector('.sidebar');
+  const bd = document.getElementById('sidebarBackdrop');
+  if(sb) sb.classList.toggle('mobile-open');
+  if(bd) bd.classList.toggle('show');
+}
+
+function closeMobileSidebar() {
+  const sb = document.querySelector('.sidebar');
+  const bd = document.getElementById('sidebarBackdrop');
+  if(sb) sb.classList.remove('mobile-open');
+  if(bd) bd.classList.remove('show');
+}
+
+function render(){
+  let q=document.getElementById("search").value.toLowerCase();
+  let s=document.getElementById("status").value;
+  let bFilter=document.getElementById("bloodFilter").value.toLowerCase();
+  
+  let f=data.filter(r=>{
+    let matchesSearch = JSON.stringify(r).toLowerCase().includes(q);
+    let matchesStatus = (s==="all"||(s==="wa"&&phone(r))||(s==="no"&&!phone(r)));
+    let bGroup = blood(r).toLowerCase();
+    let matchesBlood = (bFilter==="all" || bGroup===bFilter || (bFilter.includes("+") && bGroup.replace("+","")===bFilter.replace("+","")));
+    return matchesSearch && matchesStatus && matchesBlood;
+  });
+  
+  document.getElementById("total").textContent=data.length;
+  document.getElementById("wa").textContent=data.filter(r=>phone(r)).length;
+  document.getElementById("ready").textContent=data.filter(r=>message(r)).length;
+  document.getElementById("filtered").textContent=f.length;
+  
+  // Render Desktop Table Rows
+  document.getElementById("tbody").innerHTML=f.map(r=>{
+    let pUrl = photoUrl(r);
+    let avatarHtml = pUrl 
+      ? `<img src="${esc(pUrl)}" class="avatar-img" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\\'avatar-placeholder\\'>👤</div>'" alt="Photo">`
+      : `<div class="avatar-placeholder">👤</div>`;
+      
+    let bBadge = blood(r) ? `<span class="blood-badge">${esc(blood(r))}</span>` : '<span style="color:#94a3b8">—</span>';
+    let fName = father(r) ? esc(father(r)) : '<span style="color:#94a3b8">—</span>';
+    let statusHtml = phone(r) 
+      ? `<span class="status-pill available"><span class="dot"></span> Available</span>`
+      : `<span class="status-pill none"><span class="dot"></span> No Number</span>`;
+
+    return `<tr>
+      <td>${avatarHtml}</td>
+      <td>
+        <div class="member-name-box">
+          <b>${esc(name(r))}</b>
+          <span class="member-id-tag">${mno(r)?'Member #'+esc(mno(r)):'ID: —'}</span>
+        </div>
+      </td>
+      <td><b>${esc(displayPhone(r))}</b></td>
+      <td>${bBadge}</td>
+      <td>${fName}</td>
+      <td>${statusHtml}</td>
+      <td><div class="msg-snippet" title="${esc(message(r))}">${esc(message(r).slice(0,55))}${message(r).length>55?"…":""}</div></td>
+      <td>${phone(r)?`<button class="btn-send-table" onclick="openMsg(${data.indexOf(r)})">💬 Send</button>`:'<span style="color:#94a3b8">—</span>'}</td>
+    </tr>`;
+  }).join("");
+
+  // Render Mobile Cards View
+  let cardsContainer = document.getElementById("cardsGridContainer");
+  if(cardsContainer) {
+    if(f.length === 0) {
+      cardsContainer.innerHTML = `<div style="text-align:center; padding:40px 20px; color:#64748b; background:white; border-radius:16px; border:1px solid #e2e8f0; grid-column: 1 / -1; font-weight:600;">No members found matching your search or filters.</div>`;
+    } else {
+      cardsContainer.innerHTML = f.map(r=>{
+        let pUrl = photoUrl(r);
+        let avatarHtml = pUrl 
+          ? `<img src="${esc(pUrl)}" class="avatar-img" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\\'avatar-placeholder\\'>👤</div>'" alt="Photo">`
+          : `<div class="avatar-placeholder">👤</div>`;
+          
+        let bBadge = blood(r) ? `<span class="blood-badge">${esc(blood(r))}</span>` : '';
+        let statusHtml = phone(r) 
+          ? `<span class="status-pill available"><span class="dot"></span> Available</span>`
+          : `<span class="status-pill none"><span class="dot"></span> No Number</span>`;
+          
+        let idx = data.indexOf(r);
+
+        return `<div class="member-card">
+          <div class="member-card-header">
+            <div class="member-card-avatar">${avatarHtml}</div>
+            <div class="member-card-title-area">
+              <div class="member-card-name">${esc(name(r))}</div>
+              <div class="member-card-sub-flex">
+                <span class="member-id-tag">${mno(r)?'Member #'+esc(mno(r)):'ID: —'}</span>
+                ${bBadge}
+              </div>
+            </div>
+            <div class="member-card-status">${statusHtml}</div>
+          </div>
+          
+          <div class="member-card-body">
+            <div class="card-info-row">
+              <span class="info-label">📞 Phone</span>
+              <span class="info-value"><b>${esc(displayPhone(r))}</b></span>
+            </div>
+            ${father(r) ? `<div class="card-info-row"><span class="info-label">👨‍👦 Father</span><span class="info-value">${esc(father(r))}</span></div>` : ''}
+            <div class="card-info-row" style="align-items:flex-start; margin-top:4px;">
+              <span class="info-label">💬 Msg</span>
+              <span class="info-value msg-snippet" style="max-width:210px; font-weight:500;">${esc(message(r).slice(0,60))}${message(r).length>60?'…':''}</span>
+            </div>
+          </div>
+
+          <div>
+            ${phone(r) 
+              ? `<button class="btn-send-card" onclick="openMsg(${idx})">💬 Send via WhatsApp</button>`
+              : `<button class="btn-send-card disabled" disabled>🚫 No Number</button>`
+            }
+          </div>
+        </div>`;
+      }).join("");
+    }
+  }
+
+  // Set view mode visibility
+  setViewMode(currentViewMode);
+}
+
+function openMsg(i){
+  selected=data[i];
+  document.getElementById("modalTitle").textContent="Send WhatsApp Message to "+name(selected);
+  document.getElementById("msg").value=message(selected);
+  
+  // Populate member profile card in modal
+  let pUrl = photoUrl(selected);
+  let avatarContainer = document.getElementById("modalAvatarContainer");
+  if (pUrl) {
+    avatarContainer.innerHTML = `<img src="${esc(pUrl)}" class="modal-avatar" onerror="this.onerror=null;this.parentNode.innerHTML='<div class=\\'avatar-placeholder large\\'>👤</div>'" alt="Avatar">`;
+  } else {
+    avatarContainer.innerHTML = `<div class="avatar-placeholder large">👤</div>`;
+  }
+  
+  document.getElementById("modalMemberNameHeader").textContent = name(selected);
+  document.getElementById("infoMno").textContent = mno(selected) ? "#" + mno(selected) : "—";
+  document.getElementById("infoBlood").textContent = blood(selected) || "—";
+  document.getElementById("infoFather").textContent = father(selected) || "—";
+  document.getElementById("infoPhone").textContent = displayPhone(selected) || "—";
+  document.getElementById("infoGmail").textContent = gmail(selected) || "—";
+  document.getElementById("infoDob").textContent = dob(selected) || "—";
+  document.getElementById("infoAddress").textContent = address(selected) || "—";
+  document.getElementById("infoInterest").textContent = interest(selected) || "—";
+  
+  // Default attached image to Club QR code Example-QR-code.webp
+  setImageSource('qr');
+  
+  document.getElementById("toastNotice").style.display = "none";
+  document.getElementById("modal").classList.add("show");
+}
+
+function closeModal(){
+  document.getElementById("modal").classList.remove("show");
+  selected=null;
+}
+
+function setImageSource(type){
+  currentImgSourceType = type;
+  
+  ['qr', 'photo', 'upload', 'none'].forEach(t => {
+    const btn = document.getElementById('tab_' + t);
+    if (btn) btn.classList.toggle('active', t === type);
+  });
+  
+  const imgEl = document.getElementById('imagePreview');
+  const noImgText = document.getElementById('noImgText');
+  const btnDownload = document.getElementById('btnDownloadImg');
+  
+  if (type === 'qr') {
+    currentImgUrl = 'Example-QR-code.webp';
+  } else if (type === 'photo') {
+    let pUrl = selected ? photoUrl(selected) : '';
+    if (!pUrl) {
+      alert("No photo link available for this member.");
+      setImageSource('qr');
+      return;
+    }
+    currentImgUrl = pUrl;
+  } else if (type === 'upload') {
+    if (customUploadDataUrl) {
+      currentImgUrl = customUploadDataUrl;
+    } else {
+      document.getElementById('customImgInput').click();
+      return;
+    }
+  } else {
+    currentImgUrl = '';
+  }
+  
+  if (currentImgUrl) {
+    imgEl.src = currentImgUrl;
+    imgEl.style.display = 'block';
+    noImgText.style.display = 'none';
+    if (btnDownload) btnDownload.style.display = 'inline-flex';
+  } else {
+    imgEl.style.display = 'none';
+    noImgText.style.display = 'block';
+    if (btnDownload) btnDownload.style.display = 'none';
+  }
+  
+  syncTextWithImageLink();
+}
+
+function handleCustomUpload(e){
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    customUploadDataUrl = evt.target.result;
+    setImageSource('upload');
+  };
+  reader.readAsDataURL(file);
+}
+
+function syncTextWithImageLink(){
+  const attachCheck = document.getElementById('attachLinkCheck');
+  if (!attachCheck) return;
+  
+  let msgBox = document.getElementById('msg');
+  let currentVal = msgBox.value;
+  
+  currentVal = currentVal.replace(/\n\n📷 Attached Image: [^\s]+/g, '').trim();
+  
+  if (attachCheck.checked && currentImgUrl) {
+    currentVal = currentVal + '\n\n📷 Attached Image: ' + currentImgUrl;
+  }
+  
+  msgBox.value = currentVal;
+}
+
+async function copyImageToClipboard(src) {
+  if (!src) return false;
+  try {
+    const img = new Image();
+    if (src.startsWith("http")) {
+      img.crossOrigin = "anonymous";
+    }
+    img.src = src;
+    await new Promise((res) => {
+      img.onload = res;
+      img.onerror = () => res();
+    });
+    if (!img.naturalWidth) return false;
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    const blob = await new Promise(res => canvas.toBlob(res, "image/png"));
+    if (blob && navigator.clipboard && window.ClipboardItem) {
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+      return true;
+    }
+  } catch (err) {
+    console.warn("Clipboard copy skipped:", err);
+  }
+  return false;
+}
+
+async function sendWhatsApp(){
+  if(!selected)return;
+  let p=phone(selected);
+  if(!p)return alert("No WhatsApp number available for this member.");
+  
+  let msgText = document.getElementById("msg").value;
+  let copyImgChecked = document.getElementById("copyImgCheck").checked;
+  let toast = document.getElementById("toastNotice");
+  
+  let imgCopied = false;
+  if (copyImgChecked && currentImgUrl) {
+    imgCopied = await copyImageToClipboard(currentImgUrl);
+  }
+
+  let toastMsg = "📱 Opening WhatsApp...";
+  if (imgCopied) {
+    toastMsg = "✅ <b>QR Code Image copied to Clipboard!</b> Press <b>Ctrl+V</b> in WhatsApp chat to paste and send the QR Code image with your message.";
+  } else if (currentImgUrl) {
+    toastMsg = "✅ WhatsApp opened! Image is ready in modal preview & download button.";
+  }
+  
+  toast.innerHTML = toastMsg;
+  toast.style.display = "block";
+
+  setTimeout(() => {
+    window.open("https://wa.me/"+p+"?text="+encodeURIComponent(msgText),"_blank");
+  }, 300);
+}
+
+function downloadCurrentImage(){
+  if(!currentImgUrl) return;
+  const a = document.createElement("a");
+  a.href = currentImgUrl;
+  a.download = ((selected && name(selected)) || "member") + "-QR-code.webp";
+  a.target = "_blank";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function openBulk(){
+  let q=document.getElementById("search").value.toLowerCase(),list=data.filter(r=>phone(r)&&JSON.stringify(r).toLowerCase().includes(q));
+  if(!list.length)return alert("No members with WhatsApp numbers.");
+  let text=list.map(r=>`${name(r)} — ${phone(r)}`).join("\n");
+  navigator.clipboard?.writeText(text);
+  alert(`${list.length} contacts copied.\n\nFor automatic bulk sending, connect an official WhatsApp Business API. A normal browser page cannot silently send messages to many contacts.`);
+}
+
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("status").addEventListener("change",render);
+document.getElementById("bloodFilter").addEventListener("change",render);
+document.getElementById("file").addEventListener("change",e=>{
+  let f=e.target.files[0];
+  if(!f)return;
+  let rd=new FileReader();
+  rd.onload=x=>{
+    let w=XLSX.read(x.target.result,{type:"array"}),sh=w.Sheets[w.SheetNames[0]];
+    data=XLSX.utils.sheet_to_json(sh,{defval:""});
+    render();
+  };
+  rd.readAsArrayBuffer(f);
+});
+
+function insertVar(varName){
+  let msgBox = document.getElementById("msg");
+  if(!msgBox || !selected) return;
+  let valToInsert = varName;
+  if(varName === '{Name}') valToInsert = name(selected);
+  else if(varName === '{MemberNo}') valToInsert = mno(selected) ? '#' + mno(selected) : '';
+  else if(varName === '{ClubName}') valToInsert = 'National Arts & Sports Club';
+  
+  let start = msgBox.selectionStart || msgBox.value.length;
+  let end = msgBox.selectionEnd || msgBox.value.length;
+  let text = msgBox.value;
+  msgBox.value = text.substring(0, start) + valToInsert + text.substring(end);
+  msgBox.focus();
+}
+
+function setQuickBlood(bgGroup){
+  let select = document.getElementById("bloodFilter");
+  if(!select) return;
+  select.value = bgGroup;
+  
+  document.querySelectorAll('.filter-pill').forEach(pill => {
+    pill.classList.toggle('active', pill.getAttribute('onclick').includes("'" + bgGroup + "'"));
+  });
+  
+  render();
+}
+
+render();
+</script></body></html>
